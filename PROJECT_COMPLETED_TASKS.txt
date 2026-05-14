@@ -1,0 +1,177 @@
+PROJECT COMPLETED TASKS
+=======================
+
+Project: Portal Starter
+Location: /home/akshit/Desktop/Portal
+
+1. Project Foundation
+---------------------
+- Created a Next.js App Router project structure using the src/ directory.
+- Configured JavaScript-based application files.
+- Added Tailwind CSS v4 global styling.
+- Added reusable shadcn/ui-style component primitives.
+- Added project configuration files:
+  - package.json
+  - next.config.mjs
+  - eslint.config.mjs
+  - postcss.config.mjs
+  - jsconfig.json
+  - components.json
+
+2. Environment Setup
+--------------------
+- Added support for local environment variables through .env.local.
+- Configured Supabase public URL and anon key usage.
+- Configured Supabase service role key variable for backend/admin use.
+- Documented required environment variables in README.md.
+
+3. Authentication Foundation
+----------------------------
+- Added Supabase browser client helper.
+- Added Supabase server client helper.
+- Added Supabase session refresh helper for protected routes.
+- Added login page at /login.
+- Added signup page at /signup.
+- Added reusable AuthForm component for login and signup.
+- Added React Hook Form and Zod validation for auth forms.
+- Added AuthProvider to track current session and user state.
+- Added sign out functionality from the dashboard top navigation.
+- Added toast notifications for auth success and error states.
+
+4. Route Protection
+-------------------
+- Protected /dashboard routes from unauthenticated access.
+- Redirected unauthenticated dashboard visitors to /login.
+- Preserved redirectTo query so users can return after login.
+- Redirected authenticated users away from /login and /signup.
+- Updated route protection to use Next.js 16 Proxy convention.
+- Moved the auth route guard to src/proxy.js for this src/app project.
+- Verified /dashboard redirects to /login when there is no session.
+
+5. Supabase Database Schema
+---------------------------
+- Added Supabase SQL schema in supabase/schema.sql.
+- Created public.users table.
+- Created public.profiles table.
+- Created public.notifications table.
+- Created public.activity_logs table.
+- Added role field to users with admin/member values.
+- Added status field to users with active/pending/disabled values.
+- Added trigger to create public user/profile rows after auth user signup.
+- Added updated_at trigger helper.
+- Enabled Row Level Security on app tables.
+- Added policies for users to read their own user row.
+- Added policies for users to read and update their own profile.
+- Added policies for users to read and update their own notifications.
+- Added policies for users to read their own activity logs.
+
+6. Supabase Realtime Setup
+--------------------------
+- Added supabase/realtime.sql.
+- Added notifications table to Supabase realtime publication.
+- Added activity_logs table to Supabase realtime publication.
+- Added reusable realtime subscription utilities.
+
+7. Dashboard Layout
+-------------------
+- Built dashboard shell layout.
+- Added responsive sidebar.
+- Added mobile sidebar dialog.
+- Added sticky top navigation.
+- Added user avatar/email dropdown.
+- Added logout action in account menu.
+- Added notification button placeholder.
+- Added search input placeholder.
+- Added theme toggle placeholder.
+
+8. Dashboard Pages
+------------------
+- Added main dashboard page at /dashboard.
+- Added stats card section.
+- Added analytics chart section.
+- Added activity feed section.
+- Added mock dashboard data for starter/demo use.
+
+9. Admin Foundation
+-------------------
+- Added admin analytics page at /dashboard/admin.
+- Added user management page at /dashboard/admin/users.
+- Added activity logs page at /dashboard/admin/activity.
+- Added reusable DataTable for admin-style data views.
+- Added search support in table views.
+- Added badge styling for user roles and status.
+- Added admin navigation links in sidebar.
+
+10. Shared Components
+---------------------
+- Added reusable UI primitives:
+  - Button
+  - Card
+  - Input
+  - Label
+  - Table
+  - Dialog
+  - Dropdown menu
+  - Avatar
+  - Badge
+  - Tabs
+  - Select
+  - Checkbox
+  - Separator
+  - Skeleton
+  - Sonner toaster
+- Added shared app components:
+  - DataTable
+  - Pagination
+  - SearchBar
+  - FilterDropdown
+  - EmptyState
+  - ErrorState
+  - LoadingSkeleton
+  - Modal
+  - ConfirmationDialog
+
+11. State and Hooks
+-------------------
+- Added Zustand UI store for sidebar/dialog state.
+- Added notification store foundation.
+- Added useSession hook.
+- Added useMobile hook.
+- Added useRealtime hook.
+
+12. Services and Utilities
+--------------------------
+- Added auth service helper.
+- Added CRUD service helper.
+- Added notifications service helper.
+- Added activity service helper.
+- Added utility helpers for class names, dates, initials, and formatting.
+- Added toast helper wrapper.
+
+13. Documentation
+-----------------
+- Added README.md with setup instructions.
+- Documented environment variables.
+- Documented folder structure.
+- Documented Supabase schema setup.
+- Documented auth routes and behavior.
+- Documented dashboard/admin starter features.
+- Updated README.md to reference src/proxy.js for route protection.
+
+14. Verification Completed
+--------------------------
+- Ran ESLint successfully.
+- Ran production build successfully.
+- Verified Next.js 16 Proxy is detected during build.
+- Verified unauthenticated /dashboard requests redirect to /login.
+- Verified root / redirects through /dashboard and then to /login when unauthenticated.
+
+15. Current Known Limitations
+-----------------------------
+- Admin vs member roles exist in the database schema but are not fully enforced in the UI yet.
+- Admin sidebar links are currently visible to all logged-in users.
+- Admin pages currently use sample/mock data.
+- Supabase RLS currently protects user-owned rows but does not yet include admin-wide management policies.
+- Settings page is present in navigation as a disabled placeholder.
+- Notifications, theme toggle, search, and profile are foundation placeholders.
+
