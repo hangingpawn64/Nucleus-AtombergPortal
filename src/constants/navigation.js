@@ -31,6 +31,5 @@ export const dashboardNavigation = [
     title: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
-    disabled: true,
   },
 ];

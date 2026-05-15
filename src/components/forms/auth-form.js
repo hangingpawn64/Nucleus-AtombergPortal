@@ -1,10 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,16 +16,26 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { notify } from "@/lib/toast";
 import { loginSchema, signupSchema } from "@/lib/validations/auth";
+
+function safeRedirectTo(value) {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/dashboard";
+  }
+
+  return value;
+}
 
 export function AuthForm({ mode = "login" }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isSignup = mode === "signup";
   const schema = isSignup ? signupSchema : loginSchema;
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+  const redirectTo = safeRedirectTo(searchParams.get("redirectTo"));
+  const [isOAuthLoading, setIsOAuthLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -34,6 +45,45 @@ export function AuthForm({ mode = "login" }) {
       confirmPassword: "",
     },
   });
+
+  useEffect(() => {
+    const authError = searchParams.get("auth_error");
+    const reset = searchParams.get("reset");
+
+    if (authError) {
+      notify.error(authError);
+    }
+
+    if (reset === "complete") {
+      notify.success("Password updated. Sign in with your new password.");
+    }
+  }, [searchParams]);
+
+  async function signInWithGoogle() {
+    const supabase = createBrowserSupabaseClient();
+
+    if (!supabase) {
+      notify.error("Add Supabase URL and anon key to your environment first.");
+      return;
+    }
+
+    setIsOAuthLoading(true);
+
+    const callbackUrl = new URL("/auth/callback", window.location.origin);
+    callbackUrl.searchParams.set("next", redirectTo);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: callbackUrl.toString(),
+      },
+    });
+
+    if (error) {
+      setIsOAuthLoading(false);
+      notify.error(error.message);
+    }
+  }
 
   async function onSubmit(values) {
     const supabase = createBrowserSupabaseClient();
@@ -48,7 +98,7 @@ export function AuthForm({ mode = "login" }) {
         email: values.email,
         password: values.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
         },
       });
 
@@ -142,6 +192,37 @@ export function AuthForm({ mode = "login" }) {
             {isSignup ? "Create account" : "Sign in"}
           </Button>
         </form>
+        <div className="my-5 flex items-center gap-3">
+          <Separator className="flex-1" />
+          <span className="text-xs font-medium uppercase text-muted-foreground">
+            Or
+          </span>
+          <Separator className="flex-1" />
+        </div>
+        <Button
+          className="w-full"
+          type="button"
+          variant="outline"
+          disabled={form.formState.isSubmitting || isOAuthLoading}
+          onClick={signInWithGoogle}
+        >
+          {isOAuthLoading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <LogIn />
+          )}
+          Continue with Google
+        </Button>
+        {!isSignup && (
+          <p className="mt-4 text-center text-sm">
+            <Link
+              className="font-medium text-primary underline-offset-4 hover:underline"
+              href="/forgot-password"
+            >
+              Forgot password?
+            </Link>
+          </p>
+        )}
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {isSignup ? "Already have an account?" : "Need an account?"}{" "}
           <Link

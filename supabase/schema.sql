@@ -13,6 +13,9 @@ create table if not exists public.profiles (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null unique references public.users(id) on delete cascade,
   full_name text,
+  first_name text,
+  last_name text,
+  mobile_number text,
   avatar_url text,
   metadata jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
@@ -47,13 +50,33 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  derived_full_name text;
 begin
+  derived_full_name := coalesce(
+    new.raw_user_meta_data->>'full_name',
+    new.raw_user_meta_data->>'name',
+    ''
+  );
+
   insert into public.users (id, email, status)
   values (new.id, coalesce(new.email, ''), 'active')
   on conflict (id) do nothing;
 
-  insert into public.profiles (user_id, full_name)
-  values (new.id, coalesce(new.raw_user_meta_data->>'full_name', ''))
+  insert into public.profiles (
+    user_id,
+    full_name,
+    first_name,
+    last_name,
+    avatar_url
+  )
+  values (
+    new.id,
+    derived_full_name,
+    nullif(coalesce(new.raw_user_meta_data->>'given_name', split_part(trim(derived_full_name), ' ', 1)), ''),
+    nullif(coalesce(new.raw_user_meta_data->>'family_name', regexp_replace(trim(derived_full_name), '^\S+\s*', '')), ''),
+    nullif(new.raw_user_meta_data->>'avatar_url', '')
+  )
   on conflict (user_id) do nothing;
 
   return new;
@@ -102,6 +125,10 @@ using (auth.uid() = id);
 create policy "Users can read their own profile"
 on public.profiles for select
 using (auth.uid() = user_id);
+
+create policy "Users can insert their own profile"
+on public.profiles for insert
+with check (auth.uid() = user_id);
 
 create policy "Users can update their own profile"
 on public.profiles for update

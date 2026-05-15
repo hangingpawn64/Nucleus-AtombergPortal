@@ -1,6 +1,7 @@
 "use client";
 
-import { Bell, LogOut, Menu, Moon, Search, User } from "lucide-react";
+import Link from "next/link";
+import { Bell, LogOut, Menu, Moon, Search, Settings, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -57,10 +58,19 @@ export function TopNav({ onMenuClick }) {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User />
-              Profile placeholder
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/profile">
+                <User />
+                Profile
+              </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/settings">
+                <Settings />
+                Settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut}>
               <LogOut />
               Logout
