@@ -1,6 +1,8 @@
 import { AuthProvider } from "@/components/shared/auth-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 
 export const metadata = {
   title: "Portal Starter",
@@ -17,6 +19,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           {children}
           <Toaster />
+          <SpeedInsights />
         </AuthProvider>
       </body>
     </html>
