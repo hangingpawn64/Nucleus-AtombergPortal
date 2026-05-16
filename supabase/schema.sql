@@ -322,3 +322,86 @@ using (
   )
 );
 
+-- =========================================================
+-- PHASE 1 FIXES & RLS ADDITIONS
+-- =========================================================
+
+-- Activity Logs Policies
+
+create policy "Users can insert their own activity logs"
+on public.activity_logs
+for insert
+to authenticated
+with check (auth.uid() = actor_id);
+
+create policy "Users can view their own activity logs"
+on public.activity_logs
+for select
+to authenticated
+using (auth.uid() = actor_id);
+
+-- Notifications Insert Policy
+
+create policy "Users can insert their own notifications"
+on public.notifications
+for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+-- =========================================================
+-- OPTIONAL DEMO SEED DATA
+-- (KEEP IN seed.sql IF POSSIBLE)
+-- =========================================================
+
+insert into public.goal_cycles (
+  name,
+  quarter,
+  start_date,
+  end_date,
+  status
+)
+values (
+  'FY 2025 Goal Cycle',
+  'Q1',
+  '2025-05-01',
+  '2025-07-31',
+  'active'
+)
+on conflict do nothing;
+
+-- =========================================================
+-- OPTIONAL USER SYNC QUERY
+-- RUN ONLY IF USERS TABLE IS MISSING AUTH USERS
+-- =========================================================
+
+insert into public.users (
+  id,
+  email,
+  status,
+  role
+)
+select
+  id,
+  email,
+  'active',
+  'member'
+from auth.users
+where id not in (
+  select id from public.users
+);
+
+-- =========================================================
+-- FUTURE ROLE MIGRATION (DO NOT RUN YET)
+-- =========================================================
+-- Save for later after manager workflow is complete.
+--
+-- alter table public.users
+--   drop constraint if exists users_role_check;
+--
+-- alter table public.users
+--   add constraint users_role_check
+--   check (role in ('employee', 'manager', 'admin'));
+--
+-- update public.users
+-- set role = 'employee'
+-- where role = 'member';
