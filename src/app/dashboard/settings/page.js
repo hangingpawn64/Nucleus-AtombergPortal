@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 
 export const metadata = {
-  title: "Settings | Portal Starter",
+  title: "Settings | AtomQuest Portal",
 };
 
 export default function SettingsPage() {

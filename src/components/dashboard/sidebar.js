@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BadgeCheck } from "lucide-react";
-import { dashboardNavigation } from "@/constants/navigation";
+import { getDashboardNavigation } from "@/constants/navigation";
+import { ROLE_LABELS, normalizeRole } from "@/lib/auth/roles";
 import { cn } from "@/lib/utils";
 
-export function Sidebar({ onNavigate }) {
+export function Sidebar({ role, onNavigate }) {
   const pathname = usePathname();
+  const normalizedRole = normalizeRole(role);
+  const navigation = getDashboardNavigation(normalizedRole);
 
   return (
     <aside className="flex h-full w-64 flex-col border-r bg-sidebar">
@@ -16,12 +19,14 @@ export function Sidebar({ onNavigate }) {
           <BadgeCheck className="size-5" />
         </div>
         <div>
-          <p className="text-sm font-semibold">Portal Starter</p>
-          <p className="text-xs text-muted-foreground">Reusable foundation</p>
+          <p className="text-sm font-semibold">AtomQuest Portal</p>
+          <p className="text-xs text-muted-foreground">
+            {ROLE_LABELS[normalizedRole]} workspace
+          </p>
         </div>
       </div>
       <nav className="flex-1 space-y-1 p-3">
-        {dashboardNavigation.map((item) => {
+        {navigation.map((item) => {
           const Icon = item.icon;
           const isActive =
             pathname === item.href ||
@@ -31,6 +36,7 @@ export function Sidebar({ onNavigate }) {
             <Link
               key={item.href}
               href={item.disabled ? "#" : item.href}
+              prefetch={false}
               aria-disabled={item.disabled}
               onClick={onNavigate}
               className={cn(

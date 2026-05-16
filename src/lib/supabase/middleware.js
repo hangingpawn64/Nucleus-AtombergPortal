@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import {
+  canAccessDashboardPath,
+  getRoleHomePath,
+  normalizeRole,
+} from "@/lib/auth/roles";
 import { getSupabaseConfig } from "./config";
 
 export async function updateSession(
@@ -45,6 +50,22 @@ export async function updateSession(
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);
+  }
+
+  if (isProtectedRoute && user) {
+    const { data: userRow } = await supabase
+      .from("users")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    const role = normalizeRole(userRow?.role);
+
+    if (!canAccessDashboardPath(role, request.nextUrl.pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = getRoleHomePath(role);
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
   }
 
   return response;

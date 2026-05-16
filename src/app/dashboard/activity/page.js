@@ -4,9 +4,12 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/utils";
 import { listActivityLogs } from "@/services/activity";
 
+export const metadata = {
+  title: "Activity | AtomQuest Portal",
+};
+
 const columns = [
   { key: "action", header: "Action" },
-  { key: "actor", header: "Actor" },
   { key: "entity_type", header: "Entity" },
   {
     key: "created_at",
@@ -15,10 +18,6 @@ const columns = [
   },
 ];
 
-export const metadata = {
-  title: "Audit Logs | AtomQuest Portal",
-};
-
 export default async function ActivityPage() {
   const supabase = await createServerSupabaseClient();
 
@@ -26,42 +25,26 @@ export default async function ActivityPage() {
     return (
       <ErrorState
         title="Supabase is not configured"
-        description="Connect Supabase before viewing audit logs."
+        description="Connect Supabase before viewing activity."
       />
     );
   }
 
   const logs = await listActivityLogs({ orderBy: "created_at" }, supabase);
-  const actorIds = [...new Set(logs.map((log) => log.actor_id).filter(Boolean))];
-  let usersById = new Map();
-
-  if (actorIds.length) {
-    const { data: users = [] } = await supabase
-      .from("users")
-      .select("id,email")
-      .in("id", actorIds);
-    usersById = new Map(users.map((user) => [user.id, user]));
-  }
-
-  const rows = logs.map((log) => ({
-    ...log,
-    actor: usersById.get(log.actor_id)?.email || "System",
-  }));
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Audit logs</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Activity</h1>
         <p className="text-sm text-muted-foreground">
-          Workflow events, approvals, rework requests, and admin actions.
+          Your goal workflow events and visible team activity.
         </p>
       </div>
       <DataTable
         columns={columns}
-        data={rows}
-        searchableKeys={["action", "actor", "entity_type"]}
+        data={logs}
+        searchableKeys={["action", "entity_type"]}
         searchPlaceholder="Search activity"
-        pageSize={10}
       />
     </div>
   );

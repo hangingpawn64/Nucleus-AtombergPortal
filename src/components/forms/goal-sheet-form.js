@@ -18,7 +18,11 @@ export function GoalSheetForm({ cycle, initialData = null }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isLocked = initialData?.status === "submitted" || initialData?.status === "approved";
+  const isLocked =
+    Boolean(initialData?.locked) ||
+    initialData?.status === "submitted" ||
+    initialData?.status === "approved";
+  const submitLabel = initialData?.status === "rework" ? "Resubmit Goals" : "Submit Goals";
 
   const form = useForm({
     resolver: zodResolver(goalSheetSchema),
@@ -254,7 +258,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
               {isSubmitting ? "Submitting..." : (
                 <>
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  Submit Goals
+                  {submitLabel}
                 </>
               )}
             </Button>

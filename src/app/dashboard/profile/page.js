@@ -4,7 +4,7 @@ import { ProfileForm } from "@/components/profile/profile-form";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Profile | Portal Starter",
+  title: "Profile | AtomQuest Portal",
 };
 
 const profileColumns =

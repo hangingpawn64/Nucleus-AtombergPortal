@@ -4,7 +4,7 @@
  * @typedef {Object} PortalUser
  * @property {string} id
  * @property {string} email
- * @property {"admin" | "member"} role
+ * @property {"employee" | "manager" | "admin"} role
  * @property {"active" | "pending" | "disabled"} status
  *
  * @typedef {Object} Notification

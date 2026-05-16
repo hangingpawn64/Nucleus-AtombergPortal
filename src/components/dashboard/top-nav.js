@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Bell, LogOut, Menu, Moon, Search, Settings, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,11 +14,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/components/shared/auth-provider";
-import { initialsFromEmail } from "@/lib/utils";
+import { ROLE_LABELS, normalizeRole } from "@/lib/auth/roles";
+import { getProfileInitials } from "@/services/profile";
 
-export function TopNav({ onMenuClick }) {
+export function TopNav({ role, profile, portalUser, onMenuClick }) {
   const { user, signOut } = useAuth();
-  const email = user?.email || "demo@example.com";
+  const email = user?.email || portalUser?.email || "demo@example.com";
+  const normalizedRole = normalizeRole(role);
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/70 md:px-6">
@@ -35,7 +38,7 @@ export function TopNav({ onMenuClick }) {
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <input
           className="h-9 w-full rounded-md border bg-background pl-9 pr-3 text-sm placeholder:text-muted-foreground focus:border-ring focus:ring-ring/50 focus:ring-[3px]"
-          placeholder="Search placeholder"
+          placeholder="Search portal"
         />
       </div>
       <div className="ml-auto flex items-center gap-2">
@@ -50,9 +53,12 @@ export function TopNav({ onMenuClick }) {
           <DropdownMenuTrigger asChild>
             <Button type="button" variant="ghost" className="gap-2 px-2">
               <Avatar>
-                <AvatarFallback>{initialsFromEmail(email)}</AvatarFallback>
+                <AvatarFallback>{getProfileInitials(profile, email)}</AvatarFallback>
               </Avatar>
               <span className="hidden max-w-40 truncate text-sm md:inline">{email}</span>
+              <Badge variant="secondary" className="hidden md:inline-flex">
+                {ROLE_LABELS[normalizedRole]}
+              </Badge>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

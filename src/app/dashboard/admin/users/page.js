@@ -1,39 +1,35 @@
-"use client";
+import { UserManagementClient } from "@/components/admin/user-management-client";
+import { ErrorState } from "@/components/shared/error-state";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { UserService } from "@/services/users";
 
-import { Badge } from "@/components/ui/badge";
-import { DataTable } from "@/components/shared/data-table";
-import { sampleUsers } from "@/constants/mock-data";
+export const metadata = {
+  title: "Users | AtomQuest Portal",
+};
 
-const columns = [
-  { key: "name", header: "Name" },
-  { key: "email", header: "Email" },
-  {
-    key: "role",
-    header: "Role",
-    render: (row) => <Badge variant="secondary">{row.role}</Badge>,
-  },
-  {
-    key: "status",
-    header: "Status",
-    render: (row) => <Badge variant="outline">{row.status}</Badge>,
-  },
-];
+export default async function UsersPage() {
+  const supabase = await createServerSupabaseClient();
 
-export default function UsersPage() {
+  if (!supabase) {
+    return (
+      <ErrorState
+        title="Supabase is not configured"
+        description="Connect Supabase before managing users."
+      />
+    );
+  }
+
+  const users = await UserService.listUsersForAdmin(supabase);
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">User management</h1>
         <p className="text-sm text-muted-foreground">
-          Replace the sample data with Supabase-powered user queries.
+          Assign employee, manager, and admin roles and maintain reporting lines.
         </p>
       </div>
-      <DataTable
-        columns={columns}
-        data={sampleUsers}
-        searchableKeys={["name", "email", "role", "status"]}
-        searchPlaceholder="Search users"
-      />
+      <UserManagementClient initialUsers={users} />
     </div>
   );
 }

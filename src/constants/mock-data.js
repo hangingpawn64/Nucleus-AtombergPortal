@@ -24,8 +24,8 @@ export const activityFeed = [
 
 export const sampleUsers = [
   { id: "1", name: "Demo Admin", email: "admin@example.com", role: "admin", status: "active" },
-  { id: "2", name: "Demo User", email: "user@example.com", role: "member", status: "active" },
-  { id: "3", name: "Pending User", email: "pending@example.com", role: "member", status: "pending" },
+  { id: "2", name: "Demo User", email: "user@example.com", role: "employee", status: "active" },
+  { id: "3", name: "Pending User", email: "pending@example.com", role: "employee", status: "pending" },
 ];
 
 export const sampleLogs = [

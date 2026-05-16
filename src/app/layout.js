@@ -5,8 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 
 export const metadata = {
-  title: "Portal Starter",
-  description: "Reusable hackathon-ready portal foundation",
+  title: "AtomQuest Portal",
+  description: "Goal setting and tracking portal",
 };
 
 export default function RootLayout({ children }) {

@@ -3,7 +3,7 @@ create extension if not exists "pgcrypto";
 create table if not exists public.users (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null unique,
-  role text not null default 'member' check (role in ('admin', 'member')),
+  role text not null default 'employee' check (role in ('employee', 'manager', 'admin')),
   status text not null default 'active' check (status in ('active', 'pending', 'disabled')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -384,24 +384,11 @@ select
   id,
   email,
   'active',
-  'member'
+  'employee'
 from auth.users
 where id not in (
   select id from public.users
 );
 
 -- =========================================================
--- FUTURE ROLE MIGRATION (DO NOT RUN YET)
--- =========================================================
--- Save for later after manager workflow is complete.
---
--- alter table public.users
---   drop constraint if exists users_role_check;
---
--- alter table public.users
---   add constraint users_role_check
---   check (role in ('employee', 'manager', 'admin'));
---
--- update public.users
--- set role = 'employee'
--- where role = 'member';
+-- Role architecture is now employee / manager / admin.
