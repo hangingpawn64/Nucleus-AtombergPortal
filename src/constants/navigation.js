@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Settings,
   Users,
+  Target,
 } from "lucide-react";
 
 export const dashboardNavigation = [
@@ -11,6 +12,11 @@ export const dashboardNavigation = [
     title: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Goals",
+    href: "/dashboard/goals",
+    icon: Target,
   },
   {
     title: "Users",
