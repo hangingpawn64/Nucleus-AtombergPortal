@@ -5,7 +5,7 @@ import { personName } from "@/lib/utils";
 import { GoalService } from "@/services/goal";
 
 export const metadata = {
-  title: "All Goals | AtomQuest Portal",
+  title: "Goal Progress | AtomQuest Portal",
 };
 
 export default async function AdminGoalsPage() {
@@ -30,9 +30,9 @@ export default async function AdminGoalsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">All Goals</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Goal Progress</h1>
         <p className="text-sm text-muted-foreground">
-          Organization-wide goal sheet visibility and admin unlock controls.
+          Organization-wide goal visibility, approval state, and admin unlock controls.
         </p>
       </div>
       <AdminGoalSheetsClient initialSheets={searchableSheets} />

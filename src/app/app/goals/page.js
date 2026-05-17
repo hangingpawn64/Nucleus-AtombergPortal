@@ -88,7 +88,7 @@ export default async function GoalsDashboardPage() {
 
             <div className="flex gap-4 border-t pt-4">
               {isEditable ? (
-                <Link href="/dashboard/goals/edit">
+                <Link href="/app/goals/edit">
                   <Button>
                     {goalSheet ? <Edit3 className="w-4 h-4 mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
                     {goalSheet?.status === "rework"
@@ -99,7 +99,7 @@ export default async function GoalsDashboardPage() {
                   </Button>
                 </Link>
               ) : (
-                <Link href="/dashboard/goals/edit">
+                <Link href="/app/goals/edit">
                   <Button variant="outline">
                     <Eye className="w-4 h-4 mr-2" />
                     View Goal Sheet

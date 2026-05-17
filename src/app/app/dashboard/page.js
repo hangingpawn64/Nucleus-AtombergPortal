@@ -67,7 +67,7 @@ async function EmployeeDashboard({ supabase }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Employee Dashboard</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">My Performance Dashboard</h1>
         <p className="text-sm text-muted-foreground">
           Current cycle status, pending actions, and goal summary.
         </p>
@@ -103,7 +103,7 @@ async function EmployeeDashboard({ supabase }) {
             </p>
           </div>
           <Button asChild>
-            <Link href="/dashboard/goals">
+            <Link href="/app/goals">
               Open Goals
               <ArrowRight className="size-4" />
             </Link>
@@ -124,7 +124,7 @@ async function ManagerDashboard({ supabase }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Manager Dashboard</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Team Workflow Dashboard</h1>
         <p className="text-sm text-muted-foreground">
           Pending approvals, returned work, and team goal coverage.
         </p>
@@ -144,7 +144,7 @@ async function ManagerDashboard({ supabase }) {
             </p>
           </div>
           <Button asChild>
-            <Link href="/dashboard/approvals">
+            <Link href="/app/approvals">
               Review Approvals
               <ArrowRight className="size-4" />
             </Link>
@@ -168,7 +168,7 @@ async function AdminDashboard({ supabase }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Admin Dashboard</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Performance Operations Dashboard</h1>
         <p className="text-sm text-muted-foreground">
           Cycle completion, employee participation, and approval health.
         </p>
@@ -188,8 +188,8 @@ async function AdminDashboard({ supabase }) {
             </p>
           </div>
           <Button asChild>
-            <Link href="/dashboard/admin/goals">
-              Open All Goals
+            <Link href="/app/goal-progress">
+              Open Goal Progress
               <ArrowRight className="size-4" />
             </Link>
           </Button>

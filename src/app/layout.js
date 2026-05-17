@@ -5,8 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 
 export const metadata = {
-  title: "AtomQuest Portal",
-  description: "Goal setting and tracking portal",
+  title: "AtomQuest Goal Setting Portal",
+  description: "Enterprise goal setting, approval, and check-in workflow portal",
 };
 
 export default function RootLayout({ children }) {

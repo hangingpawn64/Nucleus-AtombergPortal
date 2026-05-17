@@ -85,7 +85,7 @@ export function AdminGoalSheetsClient({ initialSheets = [] }) {
       render: (row) => (
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="outline" size="sm">
-            <Link href={`/dashboard/team-goals/${row.id}`}>
+            <Link href={`/app/team-goals/${row.id}`}>
               <Eye className="size-4" />
               Review
             </Link>

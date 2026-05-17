@@ -9,7 +9,7 @@ export function DashboardShell({ children, role, profile, portalUser }) {
   const { isSidebarOpen, closeSidebar, openSidebar } = useUiStore();
 
   return (
-    <div className="min-h-dvh bg-muted/30">
+    <div className="min-h-dvh bg-muted/25">
       <div className="hidden md:fixed md:inset-y-0 md:flex">
         <Sidebar role={role} />
       </div>
@@ -25,7 +25,7 @@ export function DashboardShell({ children, role, profile, portalUser }) {
           portalUser={portalUser}
           onMenuClick={openSidebar}
         />
-        <main className="p-4 md:p-6">{children}</main>
+        <main className="mx-auto w-full max-w-7xl p-4 md:p-6">{children}</main>
       </div>
     </div>
   );

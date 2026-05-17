@@ -11,7 +11,7 @@ import { GoalService } from "@/services/goal";
 import { UserService } from "@/services/users";
 
 export const metadata = {
-  title: "Admin | AtomQuest Portal",
+  title: "Analytics | AtomQuest Portal",
 };
 
 function percent(value, total) {
@@ -67,9 +67,9 @@ export default async function AdminPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Admin</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Analytics</h1>
         <p className="text-sm text-muted-foreground">
-          HR oversight for users, cycles, approvals, and audit activity.
+          Completion metrics for goal cycles, approvals, and audit activity.
         </p>
       </div>
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

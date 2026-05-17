@@ -4,10 +4,10 @@ import { normalizeRole } from "@/lib/auth/roles";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Dashboard | AtomQuest Portal",
+  title: "AtomQuest App | Goal Setting Portal",
 };
 
-export default async function DashboardLayout({ children }) {
+export default async function AppLayout({ children }) {
   const supabase = await createServerSupabaseClient();
   let portalUser = null;
   let profile = null;
@@ -18,7 +18,7 @@ export default async function DashboardLayout({ children }) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      redirect("/login?redirectTo=/dashboard");
+      redirect("/login?redirectTo=/app/dashboard");
     }
 
     const [{ data: userRow }, { data: profileRow }] = await Promise.all([

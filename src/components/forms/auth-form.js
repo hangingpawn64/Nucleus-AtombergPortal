@@ -23,7 +23,34 @@ import { loginSchema, signupSchema } from "@/lib/validations/auth";
 
 function safeRedirectTo(value) {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
-    return "/dashboard";
+    return "/app/dashboard";
+  }
+
+  if (value === "/dashboard") return "/app/dashboard";
+  if (value === "/dashboard/admin") return "/app/dashboard";
+  if (value.startsWith("/dashboard/admin/activity")) {
+    return value.replace("/dashboard/admin/activity", "/app/audit");
+  }
+  if (value.startsWith("/dashboard/admin/cycles")) {
+    return value.replace("/dashboard/admin/cycles", "/app/cycles");
+  }
+  if (value.startsWith("/dashboard/admin/goals")) {
+    return value.replace("/dashboard/admin/goals", "/app/goal-progress");
+  }
+  if (value.startsWith("/dashboard/admin/reports")) {
+    return value.replace("/dashboard/admin/reports", "/app/reports");
+  }
+  if (value.startsWith("/dashboard/admin/users")) {
+    return value.replace("/dashboard/admin/users", "/app/users");
+  }
+  if (value.startsWith("/dashboard/check-ins")) {
+    return value.replace("/dashboard/check-ins", "/app/checkins");
+  }
+  if (value.startsWith("/dashboard/settings")) {
+    return value.replace("/dashboard/settings", "/app/profile");
+  }
+  if (value.startsWith("/dashboard/")) {
+    return value.replace("/dashboard", "/app");
   }
 
   return value;
@@ -108,7 +135,7 @@ export function AuthForm({ mode = "login" }) {
       }
 
       notify.success("Account created. Check your email if confirmations are enabled.");
-      router.push("/dashboard");
+      router.push("/app/dashboard");
       router.refresh();
       return;
     }

@@ -8,11 +8,7 @@ const columns = [
   { key: "action", header: "Action" },
   { key: "actor", header: "Actor" },
   { key: "entity_type", header: "Entity" },
-  {
-    key: "created_at",
-    header: "Created",
-    render: (row) => formatDateTime(row.created_at),
-  },
+  { key: "formatted_created_at", header: "Created" },
 ];
 
 export const metadata = {
@@ -46,6 +42,7 @@ export default async function ActivityPage() {
   const rows = logs.map((log) => ({
     ...log,
     actor: usersById.get(log.actor_id)?.email || "System",
+    formatted_created_at: formatDateTime(log.created_at),
   }));
 
   return (

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import {
-  canAccessDashboardPath,
+  canAccessAppPath,
   getRoleHomePath,
   normalizeRole,
 } from "@/lib/auth/roles";
@@ -48,7 +48,7 @@ export async function updateSession(
 
   if (isAuthRoute && user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = getRoleHomePath();
     return NextResponse.redirect(url);
   }
 
@@ -60,10 +60,10 @@ export async function updateSession(
       .maybeSingle();
     const role = normalizeRole(userRow?.role);
 
-    if (!canAccessDashboardPath(role, request.nextUrl.pathname)) {
+    if (!canAccessAppPath(role, request.nextUrl.pathname)) {
       const url = request.nextUrl.clone();
-      url.pathname = getRoleHomePath(role);
-      url.search = "";
+      url.pathname = "/app/unauthorized";
+      url.searchParams.set("from", request.nextUrl.pathname);
       return NextResponse.redirect(url);
     }
   }

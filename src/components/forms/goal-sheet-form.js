@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { goalSheetSchema } from "@/lib/validations/goal-schema";
 import { Button } from "@/components/ui/button";
@@ -39,7 +39,10 @@ export function GoalSheetForm({ cycle, initialData = null }) {
     name: "goals",
   });
 
-  const watchGoals = form.watch("goals");
+  const watchGoals = useWatch({
+    control: form.control,
+    name: "goals",
+  }) || [];
   const totalWeightage = watchGoals.reduce((sum, goal) => sum + (Number(goal.weightage) || 0), 0);
   const remainingWeightage = 100 - totalWeightage;
   const isWeightageValid = totalWeightage === 100;
@@ -63,7 +66,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
       setIsSubmitting(true);
       await GoalService.submitGoalSheet(cycle.id, data.goals);
       toast.success("Goal sheet submitted successfully!");
-      router.push("/dashboard/goals");
+      router.push("/app/goals");
       router.refresh();
     } catch (error) {
       toast.error(error.message || "Failed to submit goal sheet");

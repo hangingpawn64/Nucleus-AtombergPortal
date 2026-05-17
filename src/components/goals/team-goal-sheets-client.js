@@ -31,8 +31,8 @@ function totalWeightage(sheet) {
 export function TeamGoalSheetsClient({
   sheets = [],
   initialStatus = "all",
-  title = "Team Goal Sheets",
-  description = "Review and track assigned employee submissions.",
+  title = "Team Goals",
+  description = "Track assigned employee goal sheets and approval status.",
 }) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState(initialStatus);
@@ -149,7 +149,7 @@ export function TeamGoalSheetsClient({
                   </div>
                 </div>
                 <Button asChild variant={sheet.status === "submitted" ? "default" : "outline"}>
-                  <Link href={`/dashboard/team-goals/${sheet.id}`}>
+                  <Link href={`/app/team-goals/${sheet.id}`}>
                     Open review
                     <ArrowRight className="size-4" />
                   </Link>

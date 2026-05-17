@@ -22,7 +22,7 @@ export default async function EditGoalSheetPage() {
   }
 
   if (!currentCycle) {
-    redirect("/dashboard/goals");
+    redirect("/app/goals");
   }
 
   const isLocked = Boolean(goalSheet?.locked) || goalSheet?.status === "submitted" || goalSheet?.status === "approved";
@@ -33,7 +33,7 @@ export default async function EditGoalSheetPage() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex items-center gap-4">
-        <Link href="/dashboard/goals">
+        <Link href="/app/goals">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="w-5 h-5" />
           </Button>

@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { CycleService } from "@/services/cycles";
 
 export const metadata = {
-  title: "Cycle Management | AtomQuest Portal",
+  title: "Goal Cycles | AtomQuest Portal",
 };
 
 export default async function CycleManagementPage() {
@@ -24,7 +24,7 @@ export default async function CycleManagementPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Cycle Management</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Goal Cycles</h1>
         <p className="text-sm text-muted-foreground">
           Create cycles and control the active goal-setting window.
         </p>
