@@ -10,8 +10,13 @@ export function subscribeToTable({
     return { unsubscribe: () => undefined };
   }
 
+  const uniqueId =
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random()}`;
+
   const channel = supabase
-    .channel(`${schema}:${table}:${filter || "all"}`)
+    .channel(`${schema}:${table}:${filter || "all"}:${uniqueId}`)
     .on(
       "postgres_changes",
       {

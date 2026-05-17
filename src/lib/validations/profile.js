@@ -24,3 +24,51 @@ export const profileSchema = z.object({
     "Enter a valid mobile number.",
   ),
 });
+
+export function passwordStrengthChecks(password = "") {
+  return [
+    {
+      id: "length",
+      label: "At least 8 characters",
+      passed: password.length >= 8,
+    },
+    {
+      id: "case",
+      label: "Upper and lower case letters",
+      passed: /[a-z]/.test(password) && /[A-Z]/.test(password),
+    },
+    {
+      id: "number",
+      label: "At least one number",
+      passed: /\d/.test(password),
+    },
+    {
+      id: "symbol",
+      label: "At least one symbol",
+      passed: /[^A-Za-z0-9]/.test(password),
+    },
+  ];
+}
+
+export function passwordStrengthScore(password = "") {
+  return passwordStrengthChecks(password).filter((check) => check.passed).length;
+}
+
+export const strongPasswordSchema = z
+  .string()
+  .min(8, "Password must be at least 8 characters.")
+  .refine(
+    (value) => passwordStrengthScore(value) >= 4,
+    "Use upper and lower case letters, a number, and a symbol.",
+  );
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Enter your current password."),
+    newPassword: strongPasswordSchema,
+    confirmPassword: z.string().min(1, "Confirm your new password."),
+  })
+  .refine((values) => values.newPassword === values.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });

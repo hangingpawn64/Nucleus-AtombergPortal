@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, ChevronRight, LogOut, Menu, Search, User } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,9 +14,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getRouteLabel } from "@/constants/navigation";
+import { UserAvatar } from "@/components/profile/user-avatar";
 import { useAuth } from "@/components/shared/auth-provider";
 import { ROLE_LABELS, normalizeRole } from "@/lib/auth/roles";
-import { getProfileInitials } from "@/services/profile";
 
 export function TopNav({ role, profile, portalUser, onMenuClick }) {
   const { user, signOut } = useAuth();
@@ -62,9 +61,7 @@ export function TopNav({ role, profile, portalUser, onMenuClick }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button type="button" variant="ghost" className="gap-2 px-2">
-              <Avatar>
-                <AvatarFallback>{getProfileInitials(profile, email)}</AvatarFallback>
-              </Avatar>
+              <UserAvatar profile={profile} email={email} size="md" />
               <span className="hidden max-w-40 truncate text-sm md:inline">{email}</span>
               <Badge variant="secondary" className="hidden md:inline-flex">
                 {ROLE_LABELS[normalizedRole]}

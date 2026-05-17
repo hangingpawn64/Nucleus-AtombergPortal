@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { strongPasswordSchema } from "./profile";
 
 export const loginSchema = z.object({
   email: z.string().email("Enter a valid email address."),
@@ -20,7 +21,7 @@ export const forgotPasswordSchema = z.object({
 
 export const resetPasswordSchema = z
   .object({
-    password: z.string().min(8, "Password must be at least 8 characters."),
+    password: strongPasswordSchema,
     confirmPassword: z.string().min(8, "Confirm your password."),
   })
   .refine((values) => values.password === values.confirmPassword, {

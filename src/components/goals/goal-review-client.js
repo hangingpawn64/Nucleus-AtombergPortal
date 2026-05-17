@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/shared/status-badge";
+import { UserAvatar } from "@/components/profile/user-avatar";
 import { GoalService } from "@/services/goal";
 import { formatDate, formatDateTime, personName } from "@/lib/utils";
 
@@ -270,18 +271,23 @@ export function GoalReviewClient({ sheet }) {
                     key={comment.id}
                     className={`rounded-md border p-3 ${commentTone(comment.comment_type)}`}
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-medium capitalize">
-                        {comment.comment_type} note
-                      </p>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDateTime(comment.created_at)}
-                      </span>
+                    <div className="flex items-start gap-3">
+                      <UserAvatar person={comment.author} size="sm" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-sm font-medium capitalize">
+                            {comment.comment_type} note
+                          </p>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDateTime(comment.created_at)}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm leading-6">{comment.comment}</p>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {personName(comment.author, "Reviewer")}
+                        </p>
+                      </div>
                     </div>
-                    <p className="mt-2 text-sm leading-6">{comment.comment}</p>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {personName(comment.author, "Reviewer")}
-                    </p>
                   </div>
                 ))
               )}

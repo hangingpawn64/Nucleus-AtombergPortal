@@ -7,12 +7,16 @@ import {
   getAppNavigation,
   groupNavigationBySection,
 } from "@/constants/navigation";
+import { UserAvatar } from "@/components/profile/user-avatar";
 import { ROLE_LABELS, normalizeRole } from "@/lib/auth/roles";
+import { getProfileDisplayName } from "@/services/profile";
 import { cn } from "@/lib/utils";
 
-export function Sidebar({ role, onNavigate }) {
+export function Sidebar({ role, profile, portalUser, onNavigate }) {
   const pathname = usePathname();
   const normalizedRole = normalizeRole(role);
+  const email = portalUser?.email || "";
+  const displayName = getProfileDisplayName(profile, email);
   const navigationGroups = groupNavigationBySection(
     getAppNavigation(normalizedRole),
   );
@@ -62,8 +66,14 @@ export function Sidebar({ role, onNavigate }) {
           </div>
         ))}
       </nav>
-      <div className="border-t p-4 text-xs text-muted-foreground">
-        Goal setting, approvals, and progress tracking in one workflow.
+      <div className="border-t p-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <UserAvatar profile={profile} email={email} size="sm" />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{displayName}</p>
+            <p className="truncate text-xs text-muted-foreground">{email}</p>
+          </div>
+        </div>
       </div>
     </aside>
   );

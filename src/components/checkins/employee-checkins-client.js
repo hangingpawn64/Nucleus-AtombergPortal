@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { StatusBadge } from "@/components/shared/status-badge";
+import { UserAvatar } from "@/components/profile/user-avatar";
 import { CheckinService } from "@/services/checkins";
 import { formatDateTime } from "@/lib/utils";
 
@@ -242,17 +243,20 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
                 {comments.length > 0 && (
                   <div className="space-y-2 rounded-md border bg-muted/20 p-3">
                     {comments.map((comment) => (
-                      <div key={comment.id} className="text-sm">
-                        <p className="flex items-center gap-2 font-medium">
-                          <MessageSquare className="size-4" />
-                          Manager feedback
-                        </p>
-                        <p className="mt-1 leading-6 text-muted-foreground">
-                          {comment.comment}
-                        </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {formatDateTime(comment.created_at)}
-                        </p>
+                      <div key={comment.id} className="flex gap-3 text-sm">
+                        <UserAvatar person={comment.manager} size="sm" />
+                        <div className="min-w-0 flex-1">
+                          <p className="flex items-center gap-2 font-medium">
+                            <MessageSquare className="size-4" />
+                            Manager feedback
+                          </p>
+                          <p className="mt-1 leading-6 text-muted-foreground">
+                            {comment.comment}
+                          </p>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {formatDateTime(comment.created_at)}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>

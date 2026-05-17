@@ -1,18 +1,15 @@
-import { DataTable } from "@/components/shared/data-table";
+import { ActivityLogList } from "@/components/activity/activity-log-list";
 import { ErrorState } from "@/components/shared/error-state";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { formatDateTime } from "@/lib/utils";
-import { listActivityLogs } from "@/services/activity";
+import {
+  hydrateActivityActors,
+  listActivityLogs,
+} from "@/services/activity";
 
 export const metadata = {
   title: "Activity | AtomQuest Portal",
 };
-
-const columns = [
-  { key: "action", header: "Action" },
-  { key: "entity_type", header: "Entity" },
-  { key: "formatted_created_at", header: "Created" },
-];
 
 export default async function ActivityPage() {
   const supabase = await createServerSupabaseClient();
@@ -27,7 +24,8 @@ export default async function ActivityPage() {
   }
 
   const logs = await listActivityLogs({ orderBy: "created_at" }, supabase);
-  const formattedLogs = logs.map((log) => ({
+  const hydratedLogs = await hydrateActivityActors(logs, supabase);
+  const formattedLogs = hydratedLogs.map((log) => ({
     ...log,
     formatted_created_at: formatDateTime(log.created_at),
   }));
@@ -40,12 +38,7 @@ export default async function ActivityPage() {
           Your goal workflow events and visible team activity.
         </p>
       </div>
-      <DataTable
-        columns={columns}
-        data={formattedLogs}
-        searchableKeys={["action", "entity_type"]}
-        searchPlaceholder="Search activity"
-      />
+      <ActivityLogList logs={formattedLogs} />
     </div>
   );
 }
