@@ -11,7 +11,7 @@ import { GoalService } from "@/services/goal";
 import { UserService } from "@/services/users";
 
 export const metadata = {
-  title: "Reports | AtomQuest Portal",
+  title: "Reports | Nucleus Portal",
 };
 
 function percent(value, total) {

@@ -8,7 +8,7 @@ import {
 } from "@/services/activity";
 
 export const metadata = {
-  title: "Activity | AtomQuest Portal",
+  title: "Activity | Nucleus Portal",
 };
 
 export default async function ActivityPage() {

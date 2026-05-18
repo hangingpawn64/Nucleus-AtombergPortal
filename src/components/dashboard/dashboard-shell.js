@@ -10,7 +10,7 @@ export function DashboardShell({ children, role, profile, portalUser }) {
   const { isSidebarOpen, closeSidebar, openSidebar } = useUiStore();
 
   return (
-    <div className="min-h-dvh bg-muted/25">
+    <div className="min-h-dvh bg-background bg-grid-dots">
       <ProfileRealtimeSync userId={portalUser?.id || profile?.user_id} />
       <div className="hidden md:fixed md:inset-y-0 md:flex">
         <Sidebar role={role} profile={profile} portalUser={portalUser} />

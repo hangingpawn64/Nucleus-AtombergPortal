@@ -5,7 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 
 export const metadata = {
-  title: "AtomQuest Goal Setting Portal",
+  title: "Nucleus Goal Setting Portal",
   description: "Enterprise goal setting, approval, and check-in workflow portal",
 };
 

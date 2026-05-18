@@ -3,7 +3,7 @@ import { AuthForm } from "@/components/forms/auth-form";
 import { LoadingSkeleton } from "@/components/shared/loading-skeleton";
 
 export const metadata = {
-  title: "Login | AtomQuest Portal",
+  title: "Login | Nucleus Portal",
 };
 
 export default function LoginPage() {

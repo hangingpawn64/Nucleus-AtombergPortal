@@ -5,7 +5,7 @@ import { personName } from "@/lib/utils";
 import { GoalService } from "@/services/goal";
 
 export const metadata = {
-  title: "Goal Progress | AtomQuest Portal",
+  title: "Goal Progress | Nucleus Portal",
 };
 
 export default async function AdminGoalsPage() {

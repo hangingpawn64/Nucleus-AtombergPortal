@@ -6,7 +6,7 @@ export async function GET() {
 
   return NextResponse.json({
     ok: true,
-    service: "portal-starter",
+    service: "nucleus-portal",
     supabaseConfigured: isConfigured,
     timestamp: new Date().toISOString(),
   });

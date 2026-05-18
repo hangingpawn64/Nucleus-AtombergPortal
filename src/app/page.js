@@ -1,229 +1,188 @@
 import Link from "next/link";
 import {
-  ArrowRight,
   BadgeCheck,
-  BarChart3,
-  ClipboardCheck,
-  FileText,
-  ShieldCheck,
+  Clock,
+  Check,
+  TrendingUp,
   Target,
-  Users,
+  Compass,
+  ArrowRight,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-const workflows = [
-  {
-    title: "Employees",
-    description: "Create goal sheets, submit for approval, and update quarterly progress.",
-    icon: Target,
-  },
-  {
-    title: "Managers",
-    description: "Review team goals, manage approvals, and coach progress through check-ins.",
-    icon: ClipboardCheck,
-  },
-  {
-    title: "Admins",
-    description: "Configure cycles, manage hierarchy, monitor completion, and audit activity.",
-    icon: ShieldCheck,
-  },
-];
-
-const features = [
-  {
-    title: "Role-aware workspaces",
-    description: "Each role lands in the workflow modules that match their responsibilities.",
-    icon: Users,
-  },
-  {
-    title: "Approval continuity",
-    description: "Goal submissions, rework notes, locks, and unlocks stay connected.",
-    icon: BadgeCheck,
-  },
-  {
-    title: "Completion metrics",
-    description: "Leaders can track participation, approval health, and cycle progress.",
-    icon: BarChart3,
-  },
-  {
-    title: "Audit activity",
-    description: "Important goal workflow events remain visible for governance.",
-    icon: FileText,
-  },
-];
-
-function ProductPreview() {
-  return (
-    <div className="pointer-events-none relative mt-10 rounded-md border bg-background/90 p-3 shadow-xl lg:absolute lg:inset-x-4 lg:bottom-0 lg:mt-0 lg:translate-y-12 lg:p-4">
-      <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <div className="space-y-2 border-r pr-4">
-          {["Dashboard", "My Goals", "Check-ins", "Approvals"].map((item, index) => (
-            <div
-              key={item}
-              className={`h-9 rounded-md border px-3 py-2 text-xs font-medium ${
-                index === 0 ? "bg-accent text-accent-foreground" : "bg-muted/50"
-              }`}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
-        <div className="space-y-4">
-          <div className="grid gap-3 md:grid-cols-4">
-            {["Cycle completion", "Pending approvals", "Check-ins", "Audit events"].map(
-              (label, index) => (
-                <div key={label} className="rounded-md border bg-card p-3">
-                  <p className="text-[11px] text-muted-foreground">{label}</p>
-                  <p className="mt-2 text-xl font-semibold">
-                    {["84%", "12", "67%", "128"][index]}
-                  </p>
-                </div>
-              ),
-            )}
-          </div>
-          <div className="rounded-md border bg-card">
-            {["Goal submitted", "Manager feedback added", "Q2 check-in submitted"].map(
-              (item) => (
-                <div key={item} className="flex items-center justify-between border-b px-4 py-3 last:border-b-0">
-                  <span className="text-sm font-medium">{item}</span>
-                  <span className="text-xs text-muted-foreground">Today</span>
-                </div>
-              ),
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function HomePage() {
   return (
-    <main className="min-h-dvh bg-background">
-      <header className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <span className="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <BadgeCheck className="size-5" />
-          </span>
-          AtomQuest Goals
-        </Link>
-        <nav className="flex items-center gap-2">
-          <Button asChild variant="ghost">
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/signup">Get Started</Link>
-          </Button>
-        </nav>
-      </header>
+    <main className="h-screen w-screen max-h-screen overflow-hidden p-3 md:p-4 bg-background flex flex-col transition-colors duration-500 font-sans">
+      {/* Main Canvas Card */}
+      <div className="flex-1 w-full bg-card rounded-[2.5rem] border border-border shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col relative overflow-hidden bg-grid-dots">
+        
+        {/* Floating Background Accent Gradients */}
+        <div className="absolute top-1/4 left-1/4 size-96 rounded-full bg-[#66f4ff]/10 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 size-96 rounded-full bg-[#66c4ff]/10 blur-[120px] pointer-events-none" />
 
-      <section className="relative isolate overflow-hidden border-y bg-muted/30">
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-background" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-6 lg:min-h-[620px] lg:py-24">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-primary">
-              Enterprise goal setting and tracking
+        {/* ---------------- FLOATERS (Hidden on smaller screens, fits perfectly on laptops/desktops) ---------------- */}
+
+        {/* Top-Left Floater: Sticky Note + Floating Check */}
+        <div className="absolute top-20 left-10 hidden xl:flex items-start gap-4 z-10 select-none animate-[bounce_5s_ease-in-out_infinite]">
+          {/* Yellow sticky card */}
+          <div className="bg-[#fef08a] text-slate-800 p-5 rounded-sm shadow-[0_10px_25px_rgba(234,179,8,0.15)] w-48 -rotate-3 border-t-[6px] border-[#facc15] font-sans">
+            <p className="text-[11px] leading-relaxed font-semibold">
+              Set goals to keep track of crucial progress, and align with your team effortlessly.
             </p>
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-              AtomQuest Goal Setting Portal
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-              A focused performance workflow for setting goals, approving plans,
-              capturing check-ins, and monitoring cycle completion across the organization.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/signup">
-                  Get Started
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/login">Login</Link>
-              </Button>
+          </div>
+          {/* 3D Checkbox card */}
+          <div className="bg-white dark:bg-slate-800 shadow-[0_15px_30px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-700/60 rounded-2xl p-3.5 size-14 flex items-center justify-center rotate-6 mt-6">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-brand text-slate-900 shadow-sm">
+              <Check className="size-4 stroke-[3px]" />
+            </span>
+          </div>
+        </div>
+
+        {/* Top-Right Floater: Reminders + Floating Clock */}
+        <div className="absolute top-20 right-10 hidden xl:flex items-start gap-4 z-10 select-none animate-[bounce_6s_ease-in-out_infinite_0.5s]">
+          {/* Alarm Clock Card */}
+          <div className="bg-white dark:bg-slate-800 shadow-[0_15px_30px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-700/60 rounded-2xl p-3.5 size-14 flex items-center justify-center -rotate-12 mt-6">
+            <Clock className="size-6 text-[#66c4ff] animate-pulse" />
+          </div>
+          {/* Reminders Card */}
+          <div className="bg-white dark:bg-slate-800 border border-border shadow-[0_15px_30px_rgba(0,0,0,0.05)] rounded-2xl p-4 w-52 rotate-2">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="size-2 rounded-full bg-emerald-500" />
+              <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Reminders</p>
+            </div>
+            <p className="text-xs font-bold text-foreground truncate">Today&apos;s Check-in</p>
+            <p className="text-[10px] text-muted-foreground truncate mb-2">Goal Cycle alignment review</p>
+            <span className="inline-flex items-center rounded-full bg-[#66c4ff]/10 dark:bg-[#66c4ff]/20 px-2 py-0.5 text-[9px] font-semibold text-[#007399] dark:text-[#66c4ff]">
+              14:00 - 14:30
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom-Left Floater: Goal Progress Card */}
+        <div className="absolute bottom-16 left-12 hidden xl:block z-10 select-none animate-[bounce_5.5s_ease-in-out_infinite_0.3s]">
+          <div className="bg-white dark:bg-slate-800 border border-border shadow-[0_20px_40px_rgba(0,0,0,0.06)] rounded-2xl p-5 w-60 rotate-2">
+            <div className="flex items-center justify-between mb-3.5">
+              <p className="text-xs font-bold text-foreground">Active Goals</p>
+              <TrendingUp className="size-4 text-emerald-500" />
+            </div>
+            <div className="space-y-3">
+              <div>
+                <div className="flex justify-between text-[10px] font-semibold mb-1">
+                  <span className="text-muted-foreground truncate max-w-32">Q2 Growth Campaign</span>
+                  <span className="text-foreground">60%</span>
+                </div>
+                <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-brand rounded-full" style={{ width: "60%" }} />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-[10px] font-semibold mb-1">
+                  <span className="text-muted-foreground truncate max-w-32">System Reliability v2</span>
+                  <span className="text-foreground">85%</span>
+                </div>
+                <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-brand rounded-full" style={{ width: "85%" }} />
+                </div>
+              </div>
             </div>
           </div>
-          <ProductPreview />
         </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight">Why Goal Tracking Matters</h2>
-          <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            Clear goals help employees understand expectations, give managers a
-            reliable review workflow, and give HR teams visibility into cycle health.
-          </p>
-        </div>
-      </section>
-
-      <section className="border-y bg-muted/25">
-        <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-          <div className="grid gap-4 md:grid-cols-3">
-            {workflows.map((workflow) => {
-              const Icon = workflow.icon;
-              return (
-                <Card key={workflow.title} className="rounded-md">
-                  <CardHeader>
-                    <div className="flex size-10 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                      <Icon className="size-5" />
-                    </div>
-                    <CardTitle>{workflow.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm leading-6 text-muted-foreground">
-                      {workflow.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
+        {/* Bottom-Right Floater: Modules / Integrations */}
+        <div className="absolute bottom-16 right-12 hidden xl:block z-10 select-none animate-[bounce_6.5s_ease-in-out_infinite_0.8s]">
+          <div className="bg-white dark:bg-slate-800 border border-border shadow-[0_20px_40px_rgba(0,0,0,0.06)] rounded-2xl p-4 w-52 -rotate-2">
+            <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider mb-2.5">Goal Modules</p>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-slate-50 dark:bg-slate-900 border border-border size-12 rounded-xl flex items-center justify-center shadow-sm">
+                <Target className="size-5 text-[#007399] dark:text-[#66c4ff]" />
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-900 border border-border size-12 rounded-xl flex items-center justify-center shadow-sm">
+                <Compass className="size-5 text-amber-500" />
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-900 border border-border size-12 rounded-xl flex items-center justify-center shadow-sm">
+                <BadgeCheck className="size-5 text-emerald-500" />
+              </div>
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-2 text-center font-medium">Role-based modules enabled</p>
           </div>
         </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-        <div className="mb-8 max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight">Key Features</h2>
-          <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            Built around the performance management workflow, not a generic dashboard template.
+        {/* ---------------- HEADER ---------------- */}
+        <header className="h-20 px-6 md:px-12 flex items-center justify-between border-b border-border/50 relative z-30 select-none">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="grid grid-cols-2 gap-1.5 size-5 transition-transform group-hover:rotate-12 duration-300">
+              <span className="size-2 rounded-full bg-[#66f4ff] dark:bg-[#66c4ff]" />
+              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
+              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
+              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
+              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
+              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
+            </div>
+            <span className="font-bold text-lg tracking-tight text-foreground">Nucleus</span>
+          </Link>
+
+          {/* Minimal Nav Links */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-muted-foreground select-none">
+            <Link href="/" className="hover:text-foreground transition-colors">Features</Link>
+            <Link href="/" className="hover:text-foreground transition-colors">Solutions</Link>
+            <Link href="/" className="hover:text-foreground transition-colors">Resources</Link>
+            <Link href="/" className="hover:text-foreground transition-colors">Pricing</Link>
+          </nav>
+
+          {/* Action CTAs */}
+          <div className="flex items-center gap-4 select-none">
+            <Link href="/login" className="text-sm font-semibold text-foreground hover:text-[#007399] dark:hover:text-[#66c4ff] transition-colors">
+              Sign in
+            </Link>
+            <Link href="/signup" className="hidden sm:inline-flex px-4.5 py-2 border border-border text-foreground hover:bg-muted font-bold text-xs rounded-full transition-all">
+              Get started
+            </Link>
+          </div>
+        </header>
+
+        {/* ---------------- CENTERED HERO SECTION ---------------- */}
+        <div className="flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto px-6 relative z-20">
+          
+          {/* Centered 3D Squircle Logo */}
+          <div className="flex size-16 items-center justify-center rounded-[1.25rem] bg-white dark:bg-slate-800 shadow-[0_12px_35px_rgba(0,0,0,0.06)] border border-slate-100 dark:border-slate-700/60 mb-6.5 transition-all transform hover:scale-105 duration-300">
+            <div className="grid grid-cols-2 gap-2.5 size-7">
+              <span className="size-3 rounded-full bg-[#66f4ff] dark:bg-[#66c4ff] shadow-sm animate-pulse" />
+              <span className="size-3 rounded-full bg-slate-800 dark:bg-slate-200" />
+              <span className="size-3 rounded-full bg-slate-800 dark:bg-slate-200" />
+              <span className="size-3 rounded-full bg-slate-800 dark:bg-slate-200" />
+            </div>
+          </div>
+
+          {/* Heading Title (Think, plan, track style) */}
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-[1.12] mb-4.5">
+            Set, track, and achieve<br />
+            <span className="text-slate-400 dark:text-slate-500 font-semibold">all in one place</span>
+          </h1>
+
+          {/* Subtitle Description */}
+          <p className="text-sm md:text-base text-muted-foreground max-w-lg mb-8 leading-relaxed font-medium">
+            An elegant, role-aware workflow for configuring goal sheets, managing check-ins, and monitoring cycle progress across the organization.
           </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
-              <Card key={feature.title} className="rounded-md">
-                <CardHeader>
-                  <Icon className="size-5 text-primary" />
-                  <CardTitle className="text-base">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm leading-6 text-muted-foreground">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
 
-      <footer className="border-t">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6">
-          <p>AtomQuest Goal Setting & Tracking Portal</p>
-          <div className="flex gap-4">
-            <Link href="/login" className="hover:text-foreground">Login</Link>
-            <Link href="/signup" className="hover:text-foreground">Get Started</Link>
+          {/* Core Call to Actions */}
+          <div className="flex items-center gap-3.5 select-none">
+            <Link href="/signup" className="px-7 py-3 rounded-full bg-gradient-brand text-slate-900 hover:text-slate-950 font-bold text-sm shadow-[0_4px_20px_rgba(102,244,255,0.25)] hover:shadow-[0_6px_25px_rgba(102,244,255,0.4)] transition-all transform hover:-translate-y-0.5 flex items-center gap-2 group">
+              Get Started for Free
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1 duration-200" />
+            </Link>
           </div>
         </div>
-      </footer>
+
+        {/* ---------------- FOOTER ---------------- */}
+        <footer className="h-14 px-6 md:px-12 flex items-center justify-between border-t border-border/50 text-[10px] text-muted-foreground font-semibold relative z-30 select-none">
+          <p>Nucleus Goal Setting & Tracking Portal</p>
+          <div className="flex gap-6">
+            <Link href="/login" className="hover:text-foreground transition-colors">Workspace Login</Link>
+            <p>© 2026 Nucleus, Inc.</p>
+          </div>
+        </footer>
+
+      </div>
     </main>
   );
 }

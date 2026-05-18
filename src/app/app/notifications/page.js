@@ -11,7 +11,7 @@ import { formatDateTime } from "@/lib/utils";
 import { listNotifications } from "@/services/notifications";
 
 export const metadata = {
-  title: "Notifications | AtomQuest Portal",
+  title: "Notifications | Nucleus Portal",
 };
 
 export default async function NotificationsPage() {

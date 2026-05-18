@@ -14,7 +14,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { CheckinService } from "@/services/checkins";
 
 export const metadata = {
-  title: "My Check-ins | AtomQuest Portal",
+  title: "My Check-ins | Nucleus Portal",
 };
 
 export default async function MyCheckinsPage() {

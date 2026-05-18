@@ -9,7 +9,7 @@ import {
 } from "@/services/profile";
 
 export const metadata = {
-  title: "Profile Settings | AtomQuest Portal",
+  title: "Profile Settings | Nucleus Portal",
 };
 
 function profileFromMetadata(user) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServerClient } from "@supabase/ssr";
+import { getSupabaseConfig } from "@/lib/supabase/config";
 
 function safeNext(value) {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
@@ -56,13 +57,30 @@ export async function GET(request) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  const supabase = await createServerSupabaseClient();
+  const { url, anonKey, isConfigured } = getSupabaseConfig();
 
-  if (!supabase) {
+  if (!isConfigured) {
     const redirectUrl = new URL("/login", requestUrl.origin);
     redirectUrl.searchParams.set("auth_error", "Supabase is not configured.");
     return NextResponse.redirect(redirectUrl);
   }
+
+  // Create the redirect response object first so we can attach Set-Cookie headers to it
+  const response = NextResponse.redirect(new URL(next, requestUrl.origin));
+
+  const supabase = createServerClient(url, anonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          request.cookies.set(name, value);
+          response.cookies.set(name, value, options);
+        });
+      },
+    },
+  });
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
@@ -72,5 +90,5 @@ export async function GET(request) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  return NextResponse.redirect(new URL(next, requestUrl.origin));
+  return response;
 }

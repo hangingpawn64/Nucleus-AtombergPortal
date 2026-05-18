@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { CycleService } from "@/services/cycles";
 
 export const metadata = {
-  title: "Goal Cycles | AtomQuest Portal",
+  title: "Goal Cycles | Nucleus Portal",
 };
 
 export default async function CycleManagementPage() {

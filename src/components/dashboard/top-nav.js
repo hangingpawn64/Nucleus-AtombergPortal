@@ -17,6 +17,7 @@ import { getRouteLabel } from "@/constants/navigation";
 import { UserAvatar } from "@/components/profile/user-avatar";
 import { useAuth } from "@/components/shared/auth-provider";
 import { ROLE_LABELS, normalizeRole } from "@/lib/auth/roles";
+import { ThemeToggle } from "@/components/dashboard/theme-toggle";
 
 export function TopNav({ role, profile, portalUser, onMenuClick }) {
   const { user, signOut } = useAuth();
@@ -52,6 +53,7 @@ export function TopNav({ role, profile, portalUser, onMenuClick }) {
         />
       </div>
       <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
         <Button asChild variant="ghost" size="icon">
           <Link href="/app/notifications">
             <Bell />

@@ -4,7 +4,7 @@ import { normalizeRole } from "@/lib/auth/roles";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "AtomQuest App | Goal Setting Portal",
+  title: "Nucleus App | Goal Setting Portal",
 };
 
 export default async function AppLayout({ children }) {

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 
 export const metadata = {
-  title: "Unauthorized | AtomQuest Portal",
+  title: "Unauthorized | Nucleus Portal",
 };
 
 export default async function UnauthorizedPage({ searchParams }) {

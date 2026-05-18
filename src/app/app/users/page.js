@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { UserService } from "@/services/users";
 
 export const metadata = {
-  title: "Users | AtomQuest Portal",
+  title: "Users | Nucleus Portal",
 };
 
 export default async function UsersPage() {

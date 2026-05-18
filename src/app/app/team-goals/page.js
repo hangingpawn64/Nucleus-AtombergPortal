@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { GoalService } from "@/services/goal";
 
 export const metadata = {
-  title: "Team Goals | AtomQuest Portal",
+  title: "Team Goals | Nucleus Portal",
 };
 
 export default async function TeamGoalSheetsPage() {
