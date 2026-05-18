@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/components/shared/auth-provider";
+import { AuthProvider } from "@/providers/auth-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";

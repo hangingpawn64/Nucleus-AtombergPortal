@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DataTable } from "@/components/shared/data-table";
-import { UserService } from "@/services/users";
+import { DataTable } from "@/components/tables/data-table";
+import { UserService } from "@/services/user.service";
 
 const roleOptions = [
   { value: "employee", label: "Employee" },

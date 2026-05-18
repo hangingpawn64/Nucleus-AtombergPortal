@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EmptyState } from "@/components/shared/empty-state";
-import { StatusBadge } from "@/components/shared/status-badge";
+import { EmptyState } from "@/components/empty-states/empty-state";
+import { StatusBadge } from "@/components/badges/status-badge";
 import { formatDate, personName } from "@/lib/utils";
 
 const statuses = [

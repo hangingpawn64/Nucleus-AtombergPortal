@@ -39,7 +39,7 @@ import {
   passwordStrengthScore,
   profileSchema,
 } from "@/lib/validations/profile";
-import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { notify } from "@/lib/toast";
 import { cn, formatDate } from "@/lib/utils";
 import {
@@ -49,7 +49,7 @@ import {
   updateCurrentUserProfilePreferences,
   uploadCurrentUserAvatar,
   validateAvatarFile,
-} from "@/services/profile";
+} from "@/services/profile.service";
 
 const defaultNotificationPreferences = {
   goalUpdates: true,

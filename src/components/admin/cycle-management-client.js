@@ -13,8 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { StatusBadge } from "@/components/shared/status-badge";
-import { CycleService } from "@/services/cycles";
+import { StatusBadge } from "@/components/badges/status-badge";
+import { CycleService } from "@/services/cycles.service";
 import { formatDate } from "@/lib/utils";
 
 const statusOptions = ["draft", "active", "closed", "archived"];

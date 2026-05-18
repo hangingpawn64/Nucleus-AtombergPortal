@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { EmptyState } from "@/components/shared/empty-state";
-import { StatusBadge } from "@/components/shared/status-badge";
+import { EmptyState } from "@/components/empty-states/empty-state";
+import { StatusBadge } from "@/components/badges/status-badge";
 import { UserAvatar } from "@/components/profile/user-avatar";
-import { CheckinService } from "@/services/checkins";
+import { CheckinService } from "@/services/checkin.service";
 import { formatDateTime, personName } from "@/lib/utils";
 
 function latestCheckin(goal, quarter) {

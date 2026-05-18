@@ -7,7 +7,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { EmptyState } from "@/components/shared/empty-state";
+import { EmptyState } from "@/components/empty-states/empty-state";
 import { UserAvatar } from "@/components/profile/user-avatar";
 import { formatDateTime, personName } from "@/lib/utils";
 

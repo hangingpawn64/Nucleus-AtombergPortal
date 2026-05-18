@@ -28,9 +28,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { StatusBadge } from "@/components/shared/status-badge";
+import { StatusBadge } from "@/components/badges/status-badge";
 import { UserAvatar } from "@/components/profile/user-avatar";
-import { GoalService } from "@/services/goal";
+import { GoalService } from "@/services/goal.service";
 import { formatDate, formatDateTime, personName } from "@/lib/utils";
 
 function totalWeightage(goals = []) {

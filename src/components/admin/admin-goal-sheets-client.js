@@ -14,9 +14,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { DataTable } from "@/components/shared/data-table";
-import { StatusBadge } from "@/components/shared/status-badge";
-import { GoalService } from "@/services/goal";
+import { DataTable } from "@/components/tables/data-table";
+import { StatusBadge } from "@/components/badges/status-badge";
+import { GoalService } from "@/services/goal.service";
 import { formatDate, personName } from "@/lib/utils";
 
 export function AdminGoalSheetsClient({ initialSheets = [] }) {

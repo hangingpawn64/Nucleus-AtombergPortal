@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { subscribeToTable } from "@/lib/supabase/realtime";
 
 export function useRealtimeSubscription({ table, event = "*", filter, onChange }) {

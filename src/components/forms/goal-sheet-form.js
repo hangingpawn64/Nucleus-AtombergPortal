@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Plus, AlertCircle, Save, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
-import { GoalService } from "@/services/goal";
+import { GoalService } from "@/services/goal.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getProfileDisplayName, getProfileInitials } from "@/services/profile";
+import { getProfileDisplayName, getProfileInitials } from "@/services/profile.service";
 import { cn } from "@/lib/utils";
 
 const sizeClasses = {
