@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { normalizeRole } from "./roles";
 
-export async function getCurrentPortalUser(supabase) {
+export const getCurrentPortalUser = cache(async (supabase) => {
   if (!supabase) return null;
 
   const {
@@ -22,4 +23,4 @@ export async function getCurrentPortalUser(supabase) {
     ...userRow,
     role: normalizeRole(userRow?.role),
   };
-}
+});

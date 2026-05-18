@@ -11,6 +11,7 @@ import { ErrorState } from "@/components/shared/error-state";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { normalizeRole } from "@/lib/auth/roles";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getCurrentPortalUser } from "@/lib/auth/session";
 import { GoalService } from "@/services/goal";
 import { UserService } from "@/services/users";
 
@@ -33,26 +34,14 @@ function SummaryCard({ label, value, helper }) {
   );
 }
 
-async function getCurrentRole(supabase) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return "employee";
-
-  const { data: userRow } = await supabase
-    .from("users")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  return normalizeRole(userRow?.role);
-}
-
 async function EmployeeDashboard({ supabase }) {
-  const currentCycle = await GoalService.getCurrentCycle(supabase);
-  const goalSheet = currentCycle
-    ? await GoalService.getMyGoalSheet(currentCycle.id, supabase)
+  const [currentCycle, sheets] = await Promise.all([
+    GoalService.getCurrentCycle(supabase),
+    GoalService.getMyGoalSheets(supabase),
+  ]);
+
+  const goalSheet = currentCycle && sheets
+    ? sheets.find((s) => s.cycle_id === currentCycle.id)
     : null;
   const goals = goalSheet?.goals || [];
   const pendingAction =
@@ -211,7 +200,8 @@ export default async function DashboardPage() {
     );
   }
 
-  const role = await getCurrentRole(supabase);
+  const user = await getCurrentPortalUser(supabase);
+  const role = user?.role || "employee";
 
   if (role === "admin") return <AdminDashboard supabase={supabase} />;
   if (role === "manager") return <ManagerDashboard supabase={supabase} />;

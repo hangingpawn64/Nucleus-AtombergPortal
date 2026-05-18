@@ -121,6 +121,25 @@ export const GoalService = {
     return hydratedSheet;
   },
 
+  async getMyGoalSheets(supabaseClient) {
+    const supabase = this.getClient(supabaseClient);
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) throw new Error("Not authenticated");
+
+    const { data, error } = await supabase
+      .from("goal_sheets")
+      .select(sheetSelect)
+      .eq("employee_id", user.id);
+
+    if (error) {
+      console.error("Error fetching goal sheets:", error);
+      throw error;
+    }
+
+    return hydrateGoalSheets(data || [], supabase);
+  },
+
   async getGoalSheetById(sheetId, supabaseClient) {
     const supabase = this.getClient(supabaseClient);
     const { data, error } = await supabase

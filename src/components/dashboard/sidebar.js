@@ -49,7 +49,7 @@ export function Sidebar({ role, profile, portalUser, onNavigate }) {
                 <Link
                   key={item.href}
                   href={item.disabled ? "#" : item.href}
-                  prefetch={false}
+                  prefetch={true}
                   aria-disabled={item.disabled}
                   onClick={onNavigate}
                   className={cn(

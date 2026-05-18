@@ -53,12 +53,26 @@ export async function updateSession(
   }
 
   if (isProtectedRoute && user) {
-    const { data: userRow } = await supabase
-      .from("users")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-    const role = normalizeRole(userRow?.role);
+    const roleCookieName = `nucleus-role-${user.id}`;
+    let role = request.cookies.get(roleCookieName)?.value;
+
+    if (!role) {
+      const { data: userRow } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      role = normalizeRole(userRow?.role);
+
+      // Write cookie to response so it is cached for future page views
+      response.cookies.set(roleCookieName, role, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: false,
+        secure: true,
+        sameSite: "lax",
+      });
+    }
 
     if (!canAccessAppPath(role, request.nextUrl.pathname)) {
       const url = request.nextUrl.clone();
