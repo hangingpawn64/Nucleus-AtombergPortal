@@ -1,160 +1,118 @@
-# Portal Starter
+# Nucleus Goals - Performance Portal
 
-Reusable hackathon-ready portal foundation built with Next.js App Router, JavaScript, Tailwind CSS, shadcn/ui-style components, Supabase, Zustand, React Hook Form, Zod, Recharts, Sonner, Lucide React, and Framer Motion.
+An enterprise-grade, high-fidelity **Goal Setting & Tracking Portal** engineered with Next.js App Router, Supabase Backend, and a state-of-the-art responsive design. 
 
-This starter intentionally avoids domain-specific workflows. Use it as a clean base for management systems, analytics portals, AI dashboards, tracking tools, educational portals, healthcare portals, admin systems, and workflow platforms.
+Nucleus Goals serves as the performance tracking hub for configuring goal cycles, drafting goal sheets with strict validation rules, approving submissions in manager-led review flows, and logging regular check-ins.
 
-## Initial Setup
+---
 
-```bash
-npm install
-cp .env.example .env.local
-npm run dev
-```
+## Primary Workflows & Features
 
-Open `http://localhost:3000`.
+### Employee Goal Setting
+* **Goal Sheets Drafting**: Build, organize, and edit individual performance metrics.
+* **Weightage Validations**: Strictly enforces that the combined weightage of all goals in a cycle sheet sums to **exactly 100%** before permitting submission.
+* **Submission Loop**: Seamless draft preservation and submission triggers, complete with manager rework callbacks.
 
-## Environment
+### Manager Reviews & Approvals
+* **Review Dashboard**: Unified inspection board of all direct reports' goal sheets.
+* **State Operations**: Approve, lock sheets to prevent edits, or return sheets for rework with inline comments.
 
-Required for Supabase-backed auth and realtime:
+### Cycle Configuration (HR / Admin)
+* **Cycle Controls**: Create, open, and close performance review cycles (e.g. Q1, H1, FY).
+* **Workspace Management**: Active user directories, auditing, and role mapping.
 
-```bash
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
+### Activity & Notifications
+* **Audit Trail**: Detailed activity logs capturing sheet state changes, comments, and approvals.
+* **Realtime Alerts**: Interactive notifications notifying users of cycle changes or manager reviews.
 
-The UI can render without Supabase values, but protected auth behavior needs these variables.
+### Premium UI/UX Polish
+* **Dynamic Theme Switcher**: Animated day/night switcher driving a **directional sweep** transition across the screen (left-to-right to dark mode; right-to-left to light mode) accompanied by a synchronized neon glow separator.
+* **Unified Branding**: Favicon branding integrated consistently across all public, auth, and private routes.
+* **Ultra-Responsive Grid**: Isolated route groups giving a fully unconstrained, responsive hero landing canvas.
 
-## Installed Stack
+---
 
-- Next.js App Router with `src/`
-- Tailwind CSS v4
-- ESLint
-- shadcn/ui-style primitives in `src/components/ui`
-- Supabase Auth, database helpers, middleware, and realtime utilities
-- Zustand stores
-- React Hook Form + Zod validation
-- Recharts chart foundation
-- Sonner toasts
-- Lucide React icons
-- Framer Motion micro-interactions
+## 🛠️ Stack & Dependencies
 
-## Folder Structure
+### Core Engine & Database
+* **Next.js 16.2.6 & React 19.2.4**: Built using App Router (RSC), Suspense boundaries, and Edge middlewares.
+* **Supabase Client (`v2.105.4`) & SSR (`v0.10.3`)**: Server-side cookie refresh and Edge session checking.
+* **Tailwind CSS v4.0.0**: Semantic variables styling supporting HSL/OKLCH dark-mode gradients.
+
+### Logical Interfaces
+* **Zustand (`v5.0.13`)**: Global browser state store for toasts and transitions.
+* **Zod (`v4.4.3`) & React Hook Form (`v7.75.0`)**: Schema-level inputs validation.
+* **Recharts (`v3.8.1`)**: Beautiful interactive dashboard metrics charts.
+* **Radix UI Primitives**: Accessible primitives driving dialogs, select panels, and tabs.
+
+---
+
+## 📂 Project Structure & Routes Map
+
+The folder directory isolates routes based on accessibility and purpose using **Next.js App Router Route Groups**:
 
 ```text
 src/
-  app/
-    (auth)/
-    api/
-    dashboard/
-    layout.js
-  components/
-    charts/
-    dashboard/
-    forms/
-    shared/
-    ui/
-  constants/
-  hooks/
-  lib/
-    supabase/
-    utils/
-    validations/
-  services/
-  store/
-  styles/
-  types/
-supabase/
-  schema.sql
-  realtime.sql
+├── app/                        # Next.js Routing
+│   ├── (public)/               # Public-facing views
+│   │   ├── page.js             # Hero Landing Page (Unconstrained viewport)
+│   │   └── (auth)/             # Auth Views (Restricted width Layout)
+│   │       ├── login/          # Sign In Panel
+│   │       ├── signup/         # Sign Up Panel
+│   │       ├── forgot-password/# Recovery Initiator
+│   │       └── reset-password/ # Password Reset Panel
+│   ├── (protected)/app/        # Protected dashboard views (Edge Protected)
+│   │   ├── dashboard/          # Performance overview & analytics charts
+│   │   ├── goals/              # Employee goal drafts & logs
+│   │   ├── approvals/          # Manager-side review sheets
+│   │   ├── checkins/           # Weekly progress updates
+│   │   ├── cycles/             # HR cycle configuration
+│   │   ├── profile/            # Avatar upload & profile details
+│   │   └── unauthorized/       # Access denied fallback
+│   ├── api/                    # Serverless endpoints
+│   └── globals.css             # OKLCH design variables & transitions
 ```
 
-## Core Architecture
+---
 
-- `src/proxy.js` protects `/dashboard` routes and redirects authenticated users away from auth pages.
-- `src/components/shared/auth-provider.js` persists auth state and exposes logout.
-- `src/lib/supabase/*` contains browser/server/middleware clients and realtime helpers.
-- `src/services/*` contains reusable CRUD, auth, notification, and activity helpers.
-- `src/components/dashboard/*` contains the responsive shell, sidebar, navbar, stats, and activity feed.
-- `src/components/shared/*` contains reusable table, search, filter, modal, confirmation, loading, empty, error, and pagination components.
+## ⚙️ Initial Local Setup
 
-## Supabase Database
-
-Run `supabase/schema.sql` in the Supabase SQL editor to create:
-
-- `users`
-- `profiles`
-- `notifications`
-- `activity_logs`
-
-Run `supabase/realtime.sql` after enabling realtime on the project. The app includes subscription utilities for notifications and activity updates.
-
-## Auth
-
-Routes:
-
-- `/login`
-- `/signup`
-- `/dashboard`
-
-Auth includes:
-
-- Supabase email/password login and signup
-- Session persistence through Supabase cookies
-- Middleware route protection
-- Logout from the profile dropdown
-- Loading and error handling
-
-## Dashboard
-
-The dashboard foundation includes:
-
-- Desktop sidebar
-- Mobile sidebar dialog
-- Top navbar
-- User dropdown
-- Notification placeholder
-- Search placeholder
-- Theme toggle placeholder
-- Stats cards
-- Placeholder Recharts analytics section
-- Activity feed placeholder
-- Responsive grid layout
-
-## Admin Foundation
-
-Routes:
-
-- `/dashboard/admin`
-- `/dashboard/admin/users`
-- `/dashboard/admin/activity`
-
-These pages use sample data by design. Replace sample constants with Supabase queries when the hackathon problem statement is known.
-
-## Quality Checks
-
+### 1. Install Dependencies
 ```bash
-npm run lint
-npm run build
+npm install
+```
+
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env.local` and fill in your Supabase configurations:
+```bash
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+```
+
+### 3. Database Migration
+Deploy table schemas and RLS security policies:
+1. Run the SQL migrations under `supabase/migrations/` to initialize schemas, foreign relations, and buckets.
+2. Enable database triggers for real-time notifications by running `supabase/realtime.sql`.
+
+### 4. Run Development Server
+```bash
+npm run dev
+```
+Open **`http://localhost:3000`** in your browser.
+
+---
+
+## ⚡ Quality Verifications
+
+Run the automated compilation and validation checks before deploying:
+```bash
 npm run check
 ```
+*Executes `eslint` checks followed by a full production compilation test (`next build`).*
 
-## Deployment
+---
 
-For Vercel:
-
-1. Add the environment variables from `.env.example`.
-2. Set the build command to `npm run build`.
-3. Set the install command to `npm install`.
-4. Configure Supabase auth redirect URLs for your production domain.
-5. Run the SQL files in `supabase/`.
-
-## Recommended Workflow
-
-1. Keep domain logic out of `components/ui` and `components/shared`.
-2. Add problem-specific modules under `src/app/dashboard/...`, `src/services`, and `src/lib/validations`.
-3. Start with Supabase schema changes, then service helpers, then UI.
-4. Use `DataTable`, `FormWrapper`, `Modal`, `ConfirmationDialog`, and state components before creating new abstractions.
-5. Run `npm run check` before every handoff or deployment.
+## 📄 Architectural Guide
+For an in-depth visual map, domain sequence charts, and detailed structural breakdown of the Edge Cookie Caching middleware and database services, consult [ARCHITECTURE.md](file:///home/akshit/Desktop/Portal/ARCHITECTURE.md).
