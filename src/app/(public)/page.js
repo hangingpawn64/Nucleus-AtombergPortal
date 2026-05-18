@@ -110,24 +110,9 @@ export default function HomePage() {
         <header className="h-20 px-6 md:px-12 flex items-center justify-between border-b border-border/50 relative z-30 select-none">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="grid grid-cols-2 gap-1.5 size-5 transition-transform group-hover:rotate-12 duration-300">
-              <span className="size-2 rounded-full bg-[#66f4ff] dark:bg-[#66c4ff]" />
-              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
-              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
-              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
-              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
-              <span className="size-2 rounded-full bg-slate-900 dark:bg-slate-100/90" />
-            </div>
+            <img src="/favicon.ico" alt="Nucleus Logo" className="size-5 transition-transform group-hover:rotate-12 duration-300" />
             <span className="font-bold text-lg tracking-tight text-foreground">Nucleus</span>
           </Link>
-
-          {/* Minimal Nav Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-muted-foreground select-none">
-            <Link href="/" className="hover:text-foreground transition-colors">Features</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Solutions</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Resources</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Pricing</Link>
-          </nav>
 
           {/* Action CTAs */}
           <div className="flex items-center gap-4 select-none">
@@ -144,13 +129,8 @@ export default function HomePage() {
         <div className="flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto px-6 relative z-20">
           
           {/* Centered 3D Squircle Logo */}
-          <div className="flex size-16 items-center justify-center rounded-[1.25rem] bg-white dark:bg-slate-800 shadow-[0_12px_35px_rgba(0,0,0,0.06)] border border-slate-100 dark:border-slate-700/60 mb-6.5 transition-all transform hover:scale-105 duration-300">
-            <div className="grid grid-cols-2 gap-2.5 size-7">
-              <span className="size-3 rounded-full bg-[#66f4ff] dark:bg-[#66c4ff] shadow-sm animate-pulse" />
-              <span className="size-3 rounded-full bg-slate-800 dark:bg-slate-200" />
-              <span className="size-3 rounded-full bg-slate-800 dark:bg-slate-200" />
-              <span className="size-3 rounded-full bg-slate-800 dark:bg-slate-200" />
-            </div>
+          <div className="flex size-16 items-center justify-center rounded-[1.25rem] bg-card text-card-foreground shadow-[0_12px_35px_rgba(0,0,0,0.06)] border mb-6.5 transition-all transform hover:scale-105 duration-300">
+            <img src="/favicon.ico" alt="Nucleus Logo" className="size-8" />
           </div>
 
           {/* Heading Title (Think, plan, track style) */}

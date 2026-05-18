@@ -24,8 +24,8 @@ export function Sidebar({ role, profile, portalUser, onNavigate }) {
   return (
     <aside className="flex h-full w-64 flex-col border-r bg-sidebar">
       <div className="flex h-16 items-center gap-2 border-b px-5">
-        <div className="flex size-9 items-center justify-center rounded-md bg-gradient-brand">
-          <BadgeCheck className="size-5 text-[#03141e]" />
+        <div className="flex size-9 items-center justify-center rounded-md bg-sidebar-accent border">
+          <img src="/favicon.ico" alt="Nucleus Logo" className="size-5" />
         </div>
         <div>
           <p className="text-sm font-semibold">Nucleus Goals</p>

@@ -27,13 +27,67 @@ export function ThemeToggle() {
 
   const handleToggle = (e) => {
     const checked = e.target.checked;
-    setIsDark(checked);
-    if (checked) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
+    
+    const updateTheme = () => {
+      setIsDark(checked);
+      if (checked) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
+    };
+
+    if (typeof window !== "undefined" && document.startViewTransition) {
+      // Determine direction and set transitional classes on documentElement
+      const transitionClass = checked ? "theme-transition-to-dark" : "theme-transition-to-light";
+      document.documentElement.classList.add(transitionClass);
+
+      // Add a sweeping vertical glowing neon line overlay
+      const sweepLine = document.createElement("div");
+      sweepLine.style.position = "fixed";
+      sweepLine.style.top = "0";
+      sweepLine.style.bottom = "0";
+      sweepLine.style.width = "4px";
+      // Glowing neon gradient that matches the theme transition direction
+      sweepLine.style.background = checked 
+        ? "linear-gradient(to bottom, #66f4ff, #007399, #a855f7)" 
+        : "linear-gradient(to bottom, #007399, #66c4ff, #facc15)";
+      sweepLine.style.boxShadow = checked
+        ? "0 0 25px 6px rgba(102, 244, 255, 0.7), 0 0 10px 2px rgba(168, 85, 247, 0.4)"
+        : "0 0 25px 6px rgba(102, 196, 255, 0.7), 0 0 10px 2px rgba(250, 204, 21, 0.4)";
+      sweepLine.style.zIndex = "999999";
+      sweepLine.style.pointerEvents = "none";
+      
+      // Set start position based on transition direction
+      sweepLine.style.left = checked ? "0%" : "100%";
+      sweepLine.style.transition = "left 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
+      document.body.appendChild(sweepLine);
+
+      // Start the view transition and update DOM
+      const transition = document.startViewTransition(() => {
+        updateTheme();
+      });
+
+      // Remove transition classes when completed
+      transition.finished.then(() => {
+        document.documentElement.classList.remove("theme-transition-to-dark", "theme-transition-to-light");
+      });
+
+      // Animate the line to target position immediately
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          sweepLine.style.left = checked ? "100%" : "0%";
+        });
+      });
+
+      // Remove the line once completed
+      setTimeout(() => {
+        sweepLine.remove();
+      }, 850);
     } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
+      updateTheme();
     }
   };
 

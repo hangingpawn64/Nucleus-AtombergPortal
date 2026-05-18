@@ -78,14 +78,14 @@ export function GoalSheetForm({ cycle, initialData = null }) {
   return (
     <div className="space-y-6">
       {/* Live Validation UX */}
-      <div className="bg-white p-4 rounded-lg border shadow-sm sticky top-4 z-10">
+      <div className="bg-card text-card-foreground p-4 rounded-lg border shadow-sm sticky top-4 z-10">
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold text-sm">Weightage Summary</h3>
           <span className={`text-sm font-medium ${isWeightageValid ? "text-green-600" : "text-amber-600"}`}>
             {totalWeightage}% / 100%
           </span>
         </div>
-        <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
           <div 
             className={`h-2.5 rounded-full transition-all duration-500 ${isWeightageValid ? "bg-green-500" : totalWeightage > 100 ? "bg-red-500" : "bg-amber-500"}`}
             style={{ width: `${Math.min(totalWeightage, 100)}%` }}
@@ -107,7 +107,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
         noValidate
       >
         {fields.map((field, index) => (
-          <div key={field.id} className="bg-white p-6 rounded-lg border shadow-sm relative group">
+          <div key={field.id} className="bg-card text-card-foreground p-6 rounded-lg border shadow-sm relative group">
             <div className="flex justify-between items-center mb-4">
               <h4 className="font-medium flex items-center gap-2">
                 <span className="bg-primary/10 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs">

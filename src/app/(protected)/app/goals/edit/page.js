@@ -49,7 +49,7 @@ export default async function EditGoalSheetPage() {
       </div>
 
       {isLocked && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-800">
+        <div className="rounded-lg border border-blue-200 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-950/20 p-4 text-blue-800 dark:text-blue-200">
           <p className="flex items-center gap-2 font-medium">
             <Lock className="size-4" />
             This goal sheet is locked.
@@ -61,7 +61,7 @@ export default async function EditGoalSheetPage() {
       )}
 
       {goalSheet?.status === "rework" && latestReworkComment && (
-        <div className="rounded-lg border border-orange-200 bg-orange-50 p-4 text-orange-900">
+        <div className="rounded-lg border border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-950/20 p-4 text-orange-900 dark:text-orange-200">
           <p className="flex items-center gap-2 font-medium">
             <MessageSquare className="size-4" />
             Rework requested

@@ -44,13 +44,13 @@ export default async function GoalsDashboardPage() {
       </div>
 
       {!currentCycle ? (
-        <div className="bg-white p-8 rounded-lg border text-center space-y-4">
+        <div className="bg-card text-card-foreground p-8 rounded-lg border text-center space-y-4">
           <h3 className="text-lg font-medium">No Active Cycle</h3>
           <p className="text-muted-foreground">There is currently no active goal setting cycle open.</p>
         </div>
       ) : (
         <>
-          <div className="bg-white p-6 rounded-lg border shadow-sm">
+          <div className="bg-card text-card-foreground p-6 rounded-lg border shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-lg font-semibold">{currentCycle.name}</h3>
@@ -65,7 +65,7 @@ export default async function GoalsDashboardPage() {
             </div>
 
             {goalSheet?.status === "rework" && latestFeedback && (
-              <div className="mb-4 rounded-md border border-orange-200 bg-orange-50 p-4 text-orange-900">
+              <div className="mb-4 rounded-md border border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-950/20 p-4 text-orange-900 dark:text-orange-200">
                 <div className="flex items-center gap-2 font-medium">
                   <MessageSquare className="size-4" />
                   Manager feedback

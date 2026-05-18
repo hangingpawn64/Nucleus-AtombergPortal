@@ -443,4 +443,38 @@ textarea {
   background-size: 20px 20px;
 }
 
+/* Premium Sweep Theme View Transitions */
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+.theme-transition-to-dark::view-transition-new(root) {
+  animation: 0.8s cubic-bezier(0.4, 0, 0.2, 1) both theme-sweep-to-dark;
+  mix-blend-mode: normal;
+}
+
+.theme-transition-to-light::view-transition-new(root) {
+  animation: 0.8s cubic-bezier(0.4, 0, 0.2, 1) both theme-sweep-to-light;
+  mix-blend-mode: normal;
+}
+
+@keyframes theme-sweep-to-dark {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes theme-sweep-to-light {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 
