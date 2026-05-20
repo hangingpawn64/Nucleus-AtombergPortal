@@ -63,6 +63,7 @@ export function AuthForm({ mode = "login" }) {
   const schema = isSignup ? signupSchema : loginSchema;
   const redirectTo = safeRedirectTo(searchParams.get("redirectTo"));
   const [isOAuthLoading, setIsOAuthLoading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -135,8 +136,8 @@ export function AuthForm({ mode = "login" }) {
       }
 
       notify.success("Account created. Check your email if confirmations are enabled.");
+      setIsNavigating(true);
       router.push("/app/dashboard");
-      router.refresh();
       return;
     }
 
@@ -151,8 +152,8 @@ export function AuthForm({ mode = "login" }) {
     }
 
     notify.success("Welcome back");
+    setIsNavigating(true);
     router.push(redirectTo);
-    router.refresh();
   }
 
   return (
@@ -214,8 +215,8 @@ export function AuthForm({ mode = "login" }) {
               )}
             </div>
           )}
-          <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2 className="animate-spin" />}
+          <Button className="w-full" type="submit" disabled={form.formState.isSubmitting || isNavigating}>
+            {(form.formState.isSubmitting || isNavigating) && <Loader2 className="animate-spin" />}
             {isSignup ? "Create account" : "Sign in"}
           </Button>
         </form>
@@ -230,7 +231,7 @@ export function AuthForm({ mode = "login" }) {
           className="w-full"
           type="button"
           variant="outline"
-          disabled={form.formState.isSubmitting || isOAuthLoading}
+          disabled={form.formState.isSubmitting || isOAuthLoading || isNavigating}
           onClick={signInWithGoogle}
         >
           {isOAuthLoading ? (
