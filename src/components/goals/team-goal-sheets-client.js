@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EmptyState } from "@/components/empty-states/empty-state";
 import { StatusBadge } from "@/components/badges/status-badge";
+import { SharedGoalPushDialog } from "@/components/goals/shared-goal-push-dialog";
 import { formatDate, personName } from "@/lib/utils";
 
 const statuses = [
@@ -30,6 +31,8 @@ function totalWeightage(sheet) {
 
 export function TeamGoalSheetsClient({
   sheets = [],
+  employees = [],
+  currentCycle = null,
   initialStatus = "all",
   title = "Team Goals",
   description = "Track assigned employee goal sheets and approval status.",
@@ -66,31 +69,34 @@ export function TeamGoalSheetsClient({
           <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-3 lg:w-[520px]">
-          <Card className="rounded-md">
-            <CardHeader className="p-3 pb-1">
-              <CardTitle className="text-xs text-muted-foreground">Pending</CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 pt-0 text-2xl font-semibold">
-              {counts.submitted}
-            </CardContent>
-          </Card>
-          <Card className="rounded-md">
-            <CardHeader className="p-3 pb-1">
-              <CardTitle className="text-xs text-muted-foreground">Rework</CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 pt-0 text-2xl font-semibold">
-              {counts.rework}
-            </CardContent>
-          </Card>
-          <Card className="rounded-md">
-            <CardHeader className="p-3 pb-1">
-              <CardTitle className="text-xs text-muted-foreground">Approved</CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 pt-0 text-2xl font-semibold">
-              {counts.approved}
-            </CardContent>
-          </Card>
+        <div className="flex flex-col gap-3 lg:items-end">
+          <SharedGoalPushDialog currentCycle={currentCycle} employees={employees} />
+          <div className="grid gap-3 sm:grid-cols-3 lg:w-[520px]">
+            <Card className="rounded-md">
+              <CardHeader className="p-3 pb-1">
+                <CardTitle className="text-xs text-muted-foreground">Pending</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 pt-0 text-2xl font-semibold">
+                {counts.submitted}
+              </CardContent>
+            </Card>
+            <Card className="rounded-md">
+              <CardHeader className="p-3 pb-1">
+                <CardTitle className="text-xs text-muted-foreground">Rework</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 pt-0 text-2xl font-semibold">
+                {counts.rework}
+              </CardContent>
+            </Card>
+            <Card className="rounded-md">
+              <CardHeader className="p-3 pb-1">
+                <CardTitle className="text-xs text-muted-foreground">Approved</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 pt-0 text-2xl font-semibold">
+                {counts.approved}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
 

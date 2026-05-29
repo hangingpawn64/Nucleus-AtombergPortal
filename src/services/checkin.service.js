@@ -192,6 +192,17 @@ export const CheckinService = {
     return data;
   },
 
+  async updateGoalStatus(goalId, status, supabaseClient) {
+    const supabase = getClient(supabaseClient);
+    const { data, error } = await supabase.rpc("update_goal_status", {
+      p_goal_id: goalId,
+      p_status: status,
+    });
+
+    if (error) throw error;
+    return data;
+  },
+
   async addManagerComment(checkinId, comment, supabaseClient) {
     const supabase = getClient(supabaseClient);
     const {

@@ -7,11 +7,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { Trash2, Plus, AlertCircle, Save, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { GoalService } from "@/services/goal.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+const DEFAULT_GOAL = {
+  thrust_area: "",
+  title: "",
+  description: "",
+  uom_type: "timeline",
+  target_value: "",
+  weightage: 10,
+  status: "not_started",
+};
+
+const GOAL_STATUS_OPTIONS = [
+  { value: "not_started", label: "Not Started" },
+  { value: "on_track", label: "On Track" },
+  { value: "completed", label: "Completed" },
+];
 
 export function GoalSheetForm({ cycle, initialData = null }) {
   const router = useRouter();
@@ -27,9 +44,12 @@ export function GoalSheetForm({ cycle, initialData = null }) {
   const form = useForm({
     resolver: zodResolver(goalSheetSchema),
     defaultValues: {
-      goals: initialData?.goals?.length > 0 ? initialData.goals : [
-        { thrust_area: "", title: "", description: "", uom_type: "timeline", target_value: "", weightage: 10 }
-      ],
+      goals: initialData?.goals?.length > 0
+        ? initialData.goals.map((goal) => ({
+            ...goal,
+            status: goal.status || "not_started",
+          }))
+        : [{ ...DEFAULT_GOAL }],
     },
     mode: "onChange",
   });
@@ -106,16 +126,22 @@ export function GoalSheetForm({ cycle, initialData = null }) {
         className="space-y-8"
         noValidate
       >
-        {fields.map((field, index) => (
+        {fields.map((field, index) => {
+          const isSharedGoal = Boolean(field.shared_goal_id);
+
+          return (
           <div key={field.id} className="bg-card text-card-foreground p-6 rounded-lg border shadow-sm relative group">
             <div className="flex justify-between items-center mb-4">
-              <h4 className="font-medium flex items-center gap-2">
-                <span className="bg-primary/10 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs">
-                  {index + 1}
-                </span>
-                Goal Details
-              </h4>
-              {!isLocked && fields.length > 1 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <h4 className="font-medium flex items-center gap-2">
+                  <span className="bg-primary/10 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs">
+                    {index + 1}
+                  </span>
+                  Goal Details
+                </h4>
+                {isSharedGoal && <Badge variant="outline">Pushed KPI</Badge>}
+              </div>
+              {!isLocked && !isSharedGoal && fields.length > 1 && (
                 <Button 
                   type="button" 
                   variant="ghost" 
@@ -135,7 +161,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
                 <Input 
                   {...form.register(`goals.${index}.title`)} 
                   placeholder="e.g., Increase Q3 Sales by 15%" 
-                  disabled={isLocked}
+                  disabled={isLocked || isSharedGoal}
                 />
                 {form.formState.errors.goals?.[index]?.title && (
                   <p className="text-sm text-red-500">{form.formState.errors.goals[index].title.message}</p>
@@ -147,7 +173,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
                 <Input 
                   {...form.register(`goals.${index}.thrust_area`)} 
                   placeholder="e.g., Revenue, Operations" 
-                  disabled={isLocked}
+                  disabled={isLocked || isSharedGoal}
                 />
                 {form.formState.errors.goals?.[index]?.thrust_area && (
                   <p className="text-sm text-red-500">{form.formState.errors.goals[index].thrust_area.message}</p>
@@ -172,7 +198,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
               <div className="space-y-2">
                 <Label>UoM Type <span className="text-red-500">*</span></Label>
                 <Select 
-                  disabled={isLocked}
+                  disabled={isLocked || isSharedGoal}
                   onValueChange={(val) => form.setValue(`goals.${index}.uom_type`, val)}
                   defaultValue={field.uom_type}
                 >
@@ -189,12 +215,32 @@ export function GoalSheetForm({ cycle, initialData = null }) {
               </div>
 
               <div className="space-y-2">
+                <Label>Status <span className="text-red-500">*</span></Label>
+                <Select
+                  disabled={isLocked || isSharedGoal}
+                  onValueChange={(val) => form.setValue(`goals.${index}.status`, val, { shouldValidate: true })}
+                  defaultValue={field.status || "not_started"}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {GOAL_STATUS_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
                 <Label>Target Value</Label>
                 <Input 
                   type="number"
                   {...form.register(`goals.${index}.target_value`)} 
                   placeholder="e.g., 100000" 
-                  disabled={isLocked}
+                  disabled={isLocked || isSharedGoal}
                 />
               </div>
 
@@ -203,7 +249,7 @@ export function GoalSheetForm({ cycle, initialData = null }) {
                 <Input 
                   type="date"
                   {...form.register(`goals.${index}.deadline`)} 
-                  disabled={isLocked}
+                  disabled={isLocked || isSharedGoal}
                 />
               </div>
 
@@ -212,19 +258,20 @@ export function GoalSheetForm({ cycle, initialData = null }) {
                 <Input 
                   {...form.register(`goals.${index}.description`)} 
                   placeholder="Brief description of how to achieve this" 
-                  disabled={isLocked}
+                  disabled={isLocked || isSharedGoal}
                 />
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
 
         {!isLocked && fields.length < 8 && (
           <Button 
             type="button" 
             variant="outline" 
             className="w-full border-dashed py-8 border-2"
-            onClick={() => append({ thrust_area: "", title: "", description: "", uom_type: "timeline", target_value: "", weightage: 10 })}
+            onClick={() => append({ ...DEFAULT_GOAL })}
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Goal

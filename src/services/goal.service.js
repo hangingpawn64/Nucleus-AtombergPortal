@@ -223,26 +223,46 @@ export const GoalService = {
       }, supabase);
     }
 
-    // 2. Manage Goals
-    // Clear existing goals for simplicity in draft save, then re-insert
-    // In production, an upsert is better, but this works well for drafts
-    await supabase.from("goals").delete().eq("goal_sheet_id", sheetId);
+    const sharedGoals = (goalsData || []).filter(
+      (goal) => goal.id && goal.shared_goal_id,
+    );
+
+    for (const goal of sharedGoals) {
+      const { error: sharedUpdateError } = await supabase
+        .from("goals")
+        .update({ weightage: goal.weightage })
+        .eq("id", goal.id)
+        .eq("goal_sheet_id", sheetId);
+
+      if (sharedUpdateError) throw sharedUpdateError;
+    }
+
+    const { error: deleteError } = await supabase
+      .from("goals")
+      .delete()
+      .eq("goal_sheet_id", sheetId)
+      .is("shared_goal_id", null);
+    if (deleteError) throw deleteError;
 
     if (goalsData && goalsData.length > 0) {
-      const goalsToInsert = goalsData.map(g => ({
-        goal_sheet_id: sheetId,
-        thrust_area: g.thrust_area,
-        title: g.title,
-        description: g.description,
-        uom_type: g.uom_type,
-        target_value: g.target_value === "" || g.target_value == null ? null : g.target_value,
-        weightage: g.weightage,
-        deadline: g.deadline || null,
-        status: 'not_started'
-      }));
+      const goalsToInsert = goalsData
+        .filter((goal) => !goal.shared_goal_id)
+        .map(g => ({
+          goal_sheet_id: sheetId,
+          thrust_area: g.thrust_area,
+          title: g.title,
+          description: g.description,
+          uom_type: g.uom_type,
+          target_value: g.target_value === "" || g.target_value == null ? null : g.target_value,
+          weightage: g.weightage,
+          deadline: g.deadline || null,
+          status: g.status || 'not_started'
+        }));
 
-      const { error: insertError } = await supabase.from("goals").insert(goalsToInsert);
-      if (insertError) throw insertError;
+      if (goalsToInsert.length > 0) {
+        const { error: insertError } = await supabase.from("goals").insert(goalsToInsert);
+        if (insertError) throw insertError;
+      }
 
       await createActivityLog({
         actor_id: user.id,
@@ -254,6 +274,39 @@ export const GoalService = {
     }
 
     return sheetId;
+  },
+
+  async pushSharedGoal(values, supabaseClient) {
+    const supabase = this.getClient(supabaseClient);
+    const { data, error } = await supabase.rpc("push_shared_goal", {
+      p_cycle_id: values.cycleId,
+      p_employee_ids: values.employeeIds,
+      p_primary_owner_id: values.primaryOwnerId,
+      p_title: values.title,
+      p_thrust_area: values.thrustArea,
+      p_description: values.description || null,
+      p_uom_type: values.uomType,
+      p_target_value:
+        values.targetValue === "" || values.targetValue == null
+          ? null
+          : Number(values.targetValue),
+      p_deadline: values.deadline || null,
+      p_default_weightage: Number(values.defaultWeightage || 10),
+    });
+
+    if (error) throw error;
+    return data;
+  },
+
+  async updateSharedGoalWeightage(goalId, weightage, supabaseClient) {
+    const supabase = this.getClient(supabaseClient);
+    const { data, error } = await supabase.rpc("update_shared_goal_weightage", {
+      p_goal_id: goalId,
+      p_weightage: Number(weightage),
+    });
+
+    if (error) throw error;
+    return data;
   },
 
   async submitGoalSheet(cycleId, goalsData, supabaseClient) {

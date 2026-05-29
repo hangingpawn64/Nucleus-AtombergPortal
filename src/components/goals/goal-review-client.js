@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -163,9 +164,16 @@ export function GoalReviewClient({ sheet }) {
                 <CardHeader>
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <CardTitle className="text-base">
-                        {index + 1}. {goal.title}
-                      </CardTitle>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <CardTitle className="text-base">
+                          {index + 1}. {goal.title}
+                        </CardTitle>
+                        {goal.shared_goal_id && (
+                          <Badge variant="outline">
+                            {goal.shared_goal_primary ? "Primary pushed KPI" : "Pushed KPI"}
+                          </Badge>
+                        )}
+                      </div>
                       <CardDescription>{goal.thrust_area}</CardDescription>
                     </div>
                     <span className="rounded-md border px-2 py-1 text-sm font-medium">

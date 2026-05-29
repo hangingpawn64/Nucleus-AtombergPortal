@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, MessageSquare, Save, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -15,10 +16,23 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { StatusBadge } from "@/components/badges/status-badge";
 import { UserAvatar } from "@/components/profile/user-avatar";
 import { CheckinService } from "@/services/checkin.service";
 import { formatDateTime } from "@/lib/utils";
+
+const GOAL_STATUS_OPTIONS = [
+  { value: "not_started", label: "Not Started" },
+  { value: "on_track", label: "On Track" },
+  { value: "completed", label: "Completed" },
+];
 
 function latestCheckin(goal, quarter) {
   return (
@@ -40,6 +54,7 @@ function getInitialValues(goals, quarter) {
       plannedValue: checkin?.planned_value ?? goal.target_value ?? "",
       actualValue: checkin?.actual_value ?? "",
       status: checkin?.status || "draft",
+      goalStatus: goal.status || "not_started",
       progressScore: checkin?.progress_score ?? null,
     };
     return values;
@@ -109,6 +124,27 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
       router.refresh();
     } catch (error) {
       toast.error(error.message || "Could not save check-in");
+    } finally {
+      setBusyGoalId(null);
+    }
+  }
+
+  async function saveGoalStatus(goal, status) {
+    try {
+      setBusyGoalId(goal.id);
+      const updatedGoal = await CheckinService.updateGoalStatus(goal.id, status);
+
+      setValues((nextValues) => ({
+        ...nextValues,
+        [goal.id]: {
+          ...nextValues[goal.id],
+          goalStatus: updatedGoal.status,
+        },
+      }));
+      toast.success("Goal status updated");
+      router.refresh();
+    } catch (error) {
+      toast.error(error.message || "Could not update goal status");
     } finally {
       setBusyGoalId(null);
     }
@@ -189,19 +225,27 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
           const checkin = latestCheckin(goal, quarter);
           const comments = checkin?.comments || [];
           const isBusy = busyGoalId === goal.id;
+          const isSharedRecipient = Boolean(goal.shared_goal_id && !goal.shared_goal_primary);
 
           return (
             <Card key={goal.id} className="rounded-md">
               <CardHeader>
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                   <div>
-                    <CardTitle>{goal.title}</CardTitle>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <CardTitle>{goal.title}</CardTitle>
+                      {goal.shared_goal_id && (
+                        <Badge variant="outline">
+                          {goal.shared_goal_primary ? "Primary pushed KPI" : "Pushed KPI"}
+                        </Badge>
+                      )}
+                    </div>
                     <CardDescription>
                       {goal.thrust_area} | {goal.weightage}% weightage
                     </CardDescription>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <StatusBadge status={current.status || "draft"} />
+                    <StatusBadge status={current.goalStatus || goal.status || "not_started"} />
                     <span className="rounded-md border px-2 py-1 text-sm font-medium">
                       {displayProgress(current.progressScore)}
                     </span>
@@ -216,6 +260,7 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
                       id={`planned-${goal.id}`}
                       type="number"
                       value={current.plannedValue ?? ""}
+                      disabled={isSharedRecipient}
                       onChange={(event) =>
                         updateGoal(goal.id, "plannedValue", event.target.value)
                       }
@@ -227,16 +272,37 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
                       id={`actual-${goal.id}`}
                       type="number"
                       value={current.actualValue ?? ""}
+                      disabled={isSharedRecipient}
                       onChange={(event) =>
                         updateGoal(goal.id, "actualValue", event.target.value)
                       }
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Manager comments</Label>
-                    <div className="rounded-md border bg-muted/30 px-3 py-2 text-sm">
-                      {comments.length} visible
-                    </div>
+                    <Label htmlFor={`goal-status-${goal.id}`}>Goal status</Label>
+                    <Select
+                      value={current.goalStatus || goal.status || "not_started"}
+                      disabled={isBusy || isSharedRecipient}
+                      onValueChange={(status) => saveGoalStatus(goal, status)}
+                    >
+                      <SelectTrigger id={`goal-status-${goal.id}`}>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {GOAL_STATUS_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Manager comments</Label>
+                  <div className="rounded-md border bg-muted/30 px-3 py-2 text-sm">
+                    {comments.length} visible
                   </div>
                 </div>
 
@@ -266,7 +332,7 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
                   <Button
                     type="button"
                     variant="outline"
-                    disabled={isBusy}
+                    disabled={isBusy || isSharedRecipient}
                     onClick={() => saveCheckin(goal, "draft")}
                   >
                     <Save className="size-4" />
@@ -274,7 +340,7 @@ export function EmployeeCheckinsClient({ currentCycle, goalSheet }) {
                   </Button>
                   <Button
                     type="button"
-                    disabled={isBusy || current.actualValue === ""}
+                    disabled={isBusy || isSharedRecipient || current.actualValue === ""}
                     onClick={() => saveCheckin(goal, "submitted")}
                   >
                     <Send className="size-4" />

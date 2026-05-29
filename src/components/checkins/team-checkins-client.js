@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { MessageSquare, Search, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -195,7 +196,14 @@ export function TeamCheckinsClient({
                           <div className="min-w-0 space-y-3">
                             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                               <div>
-                                <h3 className="font-semibold">{goal.title}</h3>
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <h3 className="font-semibold">{goal.title}</h3>
+                                  {goal.shared_goal_id && (
+                                    <Badge variant="outline">
+                                      {goal.shared_goal_primary ? "Primary pushed KPI" : "Pushed KPI"}
+                                    </Badge>
+                                  )}
+                                </div>
                                 <p className="text-sm text-muted-foreground">
                                   {goal.thrust_area} | {goal.weightage}% weightage
                                 </p>
