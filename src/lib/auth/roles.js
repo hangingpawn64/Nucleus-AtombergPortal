@@ -66,7 +66,7 @@ const protectedRouteRules = [
   },
   {
     prefix: "/app/reports",
-    roles: [ROLES.admin],
+    roles: [ROLES.employee, ROLES.manager, ROLES.admin],
   },
   {
     prefix: "/app/audit",

@@ -77,7 +77,7 @@ export const appNavigation = [
     href: "/app/reports",
     icon: FileBarChart,
     section: "Oversight",
-    roles: [ROLES.admin],
+    roles: [ROLES.employee, ROLES.manager, ROLES.admin],
   },
   {
     title: "Audit Logs",
